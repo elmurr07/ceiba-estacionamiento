@@ -24,6 +24,13 @@ public class PagoEntity {
 	@Column(nullable = false)
 	private Date fecha;
 
+	public PagoEntity(double valor, String usuario, Date fecha) {
+		super();
+		this.valor = valor;
+		this.usuario = usuario;
+		this.fecha = fecha;
+	}
+
 	public long getId() {
 		return id;
 	}

@@ -22,13 +22,26 @@ public class VehiculoEntity {
 	private String tipo;
 
 	@Column
-	private int cilindraje;
+	private Integer cilindraje;
 
 	@Column
 	private String usuario;
 
 	@Column
 	private Date fecha;
+
+	public VehiculoEntity() {
+		super();
+	}
+
+	public VehiculoEntity(String placa, String tipo, Integer cilindraje, String usuario, Date fecha) {
+		super();
+		this.placa = placa;
+		this.tipo = tipo;
+		this.cilindraje = cilindraje;
+		this.usuario = usuario;
+		this.fecha = fecha;
+	}
 
 	public long getId() {
 		return id;
@@ -54,11 +67,11 @@ public class VehiculoEntity {
 		this.tipo = tipo;
 	}
 
-	public int getCilindraje() {
+	public Integer getCilindraje() {
 		return cilindraje;
 	}
 
-	public void setCilindraje(int cilindraje) {
+	public void setCilindraje(Integer cilindraje) {
 		this.cilindraje = cilindraje;
 	}
 

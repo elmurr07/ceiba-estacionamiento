@@ -34,6 +34,15 @@ public class EstacionamientoEntity {
 	@Column
 	private Date fecha;
 
+	public EstacionamientoEntity(VehiculoEntity vehiculo, Date inicio, Date fin, String usuario, Date fecha) {
+		super();
+		this.vehiculo = vehiculo;
+		this.inicio = inicio;
+		this.fin = fin;
+		this.usuario = usuario;
+		this.fecha = fecha;
+	}
+
 	public long getId() {
 		return id;
 	}
