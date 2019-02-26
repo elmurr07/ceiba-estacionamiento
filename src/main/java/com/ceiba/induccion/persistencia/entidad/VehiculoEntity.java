@@ -4,9 +4,13 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 
 @Entity(name = "Vehiculo")
 public class VehiculoEntity {
@@ -19,7 +23,8 @@ public class VehiculoEntity {
 	private String placa;
 
 	@Column(nullable = false)
-	private String tipo;
+	@Enumerated(EnumType.STRING)
+	private TipoVehiculoEnum tipo;
 
 	@Column
 	private Integer cilindraje;
@@ -34,7 +39,7 @@ public class VehiculoEntity {
 		super();
 	}
 
-	public VehiculoEntity(String placa, String tipo, Integer cilindraje, String usuario, Date fecha) {
+	public VehiculoEntity(String placa, TipoVehiculoEnum tipo, Integer cilindraje, String usuario, Date fecha) {
 		super();
 		this.placa = placa;
 		this.tipo = tipo;
@@ -59,11 +64,11 @@ public class VehiculoEntity {
 		this.placa = placa;
 	}
 
-	public String getTipo() {
+	public TipoVehiculoEnum getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(TipoVehiculoEnum tipo) {
 		this.tipo = tipo;
 	}
 

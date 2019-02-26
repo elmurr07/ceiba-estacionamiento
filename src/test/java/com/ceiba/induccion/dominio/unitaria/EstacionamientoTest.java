@@ -2,8 +2,6 @@ package com.ceiba.induccion.dominio.unitaria;
 
 import static org.mockito.Mockito.when;
 
-import javax.transaction.Transactional;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,9 +10,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ceiba.induccion.dominio.EstacionamientoDominio;
-import com.ceiba.induccion.dominio.VehiculoDominio;
+import com.ceiba.induccion.utilidad.EstacionamientoConstants;
+import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -35,8 +35,7 @@ public class EstacionamientoTest {
 	@Test
 	public void verificarSiEspacioMotoTest() {
 		// arrange
-		when(estacionamientoDominio.contarVehiculos(VehiculoDominio.TIPO_VEHICULO_MOTO))
-				.thenReturn(MOTOS_EN_PARQUEADERO);
+		when(estacionamientoDominio.contarVehiculos(TipoVehiculoEnum.MOTO)).thenReturn(MOTOS_EN_PARQUEADERO);
 
 		// act
 		boolean resultado = estacionamientoDominio.existeCupoMoto();
@@ -48,8 +47,8 @@ public class EstacionamientoTest {
 	@Test
 	public void verificarNoEspacioMotoTest() {
 		// arrange
-		when(estacionamientoDominio.contarVehiculos(VehiculoDominio.TIPO_VEHICULO_MOTO))
-				.thenReturn(EstacionamientoDominio.CUPO_MOTOS_PARQUEADERO);
+		when(estacionamientoDominio.contarVehiculos(TipoVehiculoEnum.MOTO))
+				.thenReturn(EstacionamientoConstants.CUPO_MOTOS_PARQUEADERO);
 
 		// act
 		boolean resultado = estacionamientoDominio.existeCupoMoto();
@@ -61,7 +60,7 @@ public class EstacionamientoTest {
 	@Test
 	public void verificarSiEspacioCarroTest() {
 		// arrange
-		when(estacionamientoDominio.contarVehiculos(VehiculoDominio.TIPO_VEHICULO_CARRO))
+		when(estacionamientoDominio.contarVehiculos(TipoVehiculoEnum.CARRO))
 				.thenReturn(CARROS_EN_PARQUEADERO);
 
 		// act
@@ -74,8 +73,8 @@ public class EstacionamientoTest {
 	@Test
 	public void verificarNoEspacioCarroTest() {
 		// arrange
-		when(estacionamientoDominio.contarVehiculos(VehiculoDominio.TIPO_VEHICULO_CARRO))
-				.thenReturn(EstacionamientoDominio.CUPO_CARROS_PARQUEADERO);
+		when(estacionamientoDominio.contarVehiculos(TipoVehiculoEnum.CARRO))
+				.thenReturn(EstacionamientoConstants.CUPO_CARROS_PARQUEADERO);
 
 		// act
 		boolean resultado = estacionamientoDominio.existeCupoMoto();

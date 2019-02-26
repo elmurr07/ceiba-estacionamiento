@@ -4,11 +4,12 @@ import java.util.Date;
 
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
 import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
+import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 
 public class VehiculoTestBuilder {
 
 	private String placa;
-	private String tipo;
+	private TipoVehiculoEnum tipo;
 	private Integer cilindraje;
 	private String usuario;
 	private Date fecha;
@@ -26,7 +27,7 @@ public class VehiculoTestBuilder {
 		return this;
 	}
 
-	public VehiculoTestBuilder conTipo(String tipo) {
+	public VehiculoTestBuilder conTipo(TipoVehiculoEnum tipo) {
 		this.tipo = tipo;
 		return this;
 	}

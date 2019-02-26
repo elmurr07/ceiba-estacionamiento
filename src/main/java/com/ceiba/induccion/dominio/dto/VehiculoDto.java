@@ -1,13 +1,15 @@
 package com.ceiba.induccion.dominio.dto;
 
+import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
+
 public class VehiculoDto {
 
 	private long id;
 	private String placa;
-	private String tipo;
+	private TipoVehiculoEnum tipo;
 	private Integer cilindraje;
 
-	public VehiculoDto(String placa, String tipo, Integer cilindraje) {
+	public VehiculoDto(String placa, TipoVehiculoEnum tipo, Integer cilindraje) {
 		super();
 		this.placa = placa;
 		this.tipo = tipo;
@@ -30,11 +32,11 @@ public class VehiculoDto {
 		this.placa = placa;
 	}
 
-	public String getTipo() {
+	public TipoVehiculoEnum getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(TipoVehiculoEnum tipo) {
 		this.tipo = tipo;
 	}
 
