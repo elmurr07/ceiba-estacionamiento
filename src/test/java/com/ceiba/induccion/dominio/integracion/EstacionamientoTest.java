@@ -1,22 +1,24 @@
 package com.ceiba.induccion.dominio.integracion;
 
-import java.util.Date;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.when;
 
 import javax.transaction.Transactional;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.ceiba.induccion.builder.EstacionamientoTestBuilder;
 import com.ceiba.induccion.builder.VehiculoTestBuilder;
 import com.ceiba.induccion.dominio.EstacionamientoDominio;
 import com.ceiba.induccion.dominio.VehiculoDominio;
-import com.ceiba.induccion.persistencia.entidad.EstacionamientoEntity;
-import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
+import com.ceiba.induccion.dominio.dto.VehiculoDto;
+import com.ceiba.induccion.dominio.excepcion.EstacionamientoException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -24,35 +26,30 @@ import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
 public class EstacionamientoTest {
 
 	@Autowired
-	private VehiculoDominio vehiculoDominio;
-
-	@Autowired
 	private EstacionamientoDominio estacionamientoDominio;
 
 	private static final String PLACA_VEHICULO_CON_RESTRICCION = "ALG139";
 	private static final String PLACA_VEHICULO_SIN_RESTRICCION_1 = "FFH134";
 	private static final String PLACA_VEHICULO_SIN_RESTRICCION_2 = "FFH146";
-	private static final String USUARIO_SISTEMA = "user_test";
+	private static final Integer CILINDRAJE_MOTO = 550;
 	private static final int TOTAL_CARROS_ESTACIONADOS = 2;
 	private static final int TOTAL_MOTOS_ESTACIONADAS = 2;
+
+	@Before
+	public void setup() {
+		MockitoAnnotations.initMocks(EstacionamientoTest.class);
+	}
 
 	@Test
 	public void contarCarrosEstacionadosTest() {
 		// arrange
-		VehiculoEntity vehiculo1 = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_1)
-				.conTipo(VehiculoDominio.TIPO_VEHICULO_CARRO).build();
-		VehiculoEntity vehiculo2 = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_2)
-				.conTipo(VehiculoDominio.TIPO_VEHICULO_CARRO).build();
-		EstacionamientoEntity estacionamiento1 = EstacionamientoTestBuilder.defaultValues().conInicio(new Date())
-				.conFecha(new Date()).conUsuario(USUARIO_SISTEMA).conVehiculo(vehiculo1).build();
-		EstacionamientoEntity estacionamiento2 = EstacionamientoTestBuilder.defaultValues().conInicio(new Date())
-				.conFecha(new Date()).conUsuario(USUARIO_SISTEMA).conVehiculo(vehiculo2).build();
-
+		VehiculoDto vehiculoDto1 = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_1)
+				.conTipo(VehiculoDominio.TIPO_VEHICULO_CARRO).buildDto();
+		VehiculoDto vehiculoDto2 = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_2)
+				.conTipo(VehiculoDominio.TIPO_VEHICULO_CARRO).buildDto();
 		// act
-		vehiculoDominio.crearVehiculo(vehiculo1);
-		vehiculoDominio.crearVehiculo(vehiculo2);
-		estacionamientoDominio.crearEstacionamiento(estacionamiento1);
-		estacionamientoDominio.crearEstacionamiento(estacionamiento2);
+		estacionamientoDominio.registrarIngreso(vehiculoDto1);
+		estacionamientoDominio.registrarIngreso(vehiculoDto2);
 
 		int conteo = estacionamientoDominio.contarVehiculos(VehiculoDominio.TIPO_VEHICULO_CARRO);
 
@@ -63,20 +60,14 @@ public class EstacionamientoTest {
 	@Test
 	public void contarMotosEstacionadasTest() {
 		// arrange
-		VehiculoEntity vehiculo1 = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_1)
-				.conTipo(VehiculoDominio.TIPO_VEHICULO_MOTO).build();
-		VehiculoEntity vehiculo2 = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_2)
-				.conTipo(VehiculoDominio.TIPO_VEHICULO_MOTO).build();
-		EstacionamientoEntity estacionamiento1 = EstacionamientoTestBuilder.defaultValues().conInicio(new Date())
-				.conFecha(new Date()).conUsuario(USUARIO_SISTEMA).conVehiculo(vehiculo1).build();
-		EstacionamientoEntity estacionamiento2 = EstacionamientoTestBuilder.defaultValues().conInicio(new Date())
-				.conFecha(new Date()).conUsuario(USUARIO_SISTEMA).conVehiculo(vehiculo2).build();
+		VehiculoDto vehiculoDto1 = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_1)
+				.conCilindraje(CILINDRAJE_MOTO).conTipo(VehiculoDominio.TIPO_VEHICULO_MOTO).buildDto();
+		VehiculoDto vehiculoDto2 = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_2)
+				.conCilindraje(CILINDRAJE_MOTO).conTipo(VehiculoDominio.TIPO_VEHICULO_MOTO).buildDto();
 
 		// act
-		vehiculoDominio.crearVehiculo(vehiculo1);
-		vehiculoDominio.crearVehiculo(vehiculo2);
-		estacionamientoDominio.crearEstacionamiento(estacionamiento1);
-		estacionamientoDominio.crearEstacionamiento(estacionamiento2);
+		estacionamientoDominio.registrarIngreso(vehiculoDto1);
+		estacionamientoDominio.registrarIngreso(vehiculoDto2);
 
 		int conteo = estacionamientoDominio.contarVehiculos(VehiculoDominio.TIPO_VEHICULO_MOTO);
 
@@ -85,17 +76,35 @@ public class EstacionamientoTest {
 	}
 
 	@Test
-	public void vehiculoConRestriccionTest() {
+	public void registrarVehiculoConRestriccionTest() {
 		// arrange
-		VehiculoEntity vehiculo = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_CON_RESTRICCION)
-				.conTipo(VehiculoDominio.TIPO_VEHICULO_MOTO).build();
-		EstacionamientoEntity estacionamiento1 = EstacionamientoTestBuilder.defaultValues().conInicio(new Date())
-				.conFecha(new Date()).conUsuario(USUARIO_SISTEMA).conVehiculo(vehiculo).build();
-		
+		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_CON_RESTRICCION)
+				.conCilindraje(CILINDRAJE_MOTO).conTipo(VehiculoDominio.TIPO_VEHICULO_MOTO).buildDto();
+
+		when(estacionamientoDominio.tieneRestriccion(PLACA_VEHICULO_CON_RESTRICCION)).thenReturn(Boolean.TRUE);
+
 		// act
-		
+		try {
+			estacionamientoDominio.registrarIngreso(vehiculoDto);
+		} catch (EstacionamientoException e) {
+			Assert.assertEquals(EstacionamientoDominio.MENSAJE_ERROR_NO_INGRESO_FIN_SEMANA, e.getMessage());
+		}
 
 		// assert
+		fail();
+	}
+
+	@Test
+	public void registrarVehiculoSinRestriccionTest() {
+		// arrange
+		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_1)
+				.conCilindraje(CILINDRAJE_MOTO).conTipo(VehiculoDominio.TIPO_VEHICULO_MOTO).buildDto();
+
+		// act
+		estacionamientoDominio.registrarIngreso(vehiculoDto);
+
+		// assert
+		Assert.assertTrue(Boolean.TRUE);
 	}
 
 }

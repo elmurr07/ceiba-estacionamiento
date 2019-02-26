@@ -2,6 +2,7 @@ package com.ceiba.induccion.builder;
 
 import java.util.Date;
 
+import com.ceiba.induccion.dominio.dto.VehiculoDto;
 import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
 
 public class VehiculoTestBuilder {
@@ -47,6 +48,10 @@ public class VehiculoTestBuilder {
 
 	public VehiculoEntity build() {
 		return new VehiculoEntity(this.placa, this.tipo, this.cilindraje, this.usuario, this.fecha);
+	}
+
+	public VehiculoDto buildDto() {
+		return new VehiculoDto(this.placa, this.tipo, this.cilindraje);
 	}
 
 }
