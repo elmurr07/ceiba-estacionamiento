@@ -2,9 +2,12 @@ package com.ceiba.induccion.dominio;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
 import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
 import com.ceiba.induccion.utilidad.EstacionamientoConstants;
 
+@Component("moto")
 public class MotoStrategy implements VehiculoStrategy {
 
 	@Override

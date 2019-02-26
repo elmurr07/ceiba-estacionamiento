@@ -3,6 +3,8 @@ package com.ceiba.induccion.dominio;
 import java.time.DayOfWeek;
 import java.util.Date;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,12 @@ public class EstacionamientoDominioImpl implements EstacionamientoDominio {
 
 	@Autowired
 	private EstacionamientoRepositorio estacionamientoRepositorio;
+
+	@Resource(name = "carro")
+	private VehiculoStrategy carro;
+
+	@Resource(name = "moto")
+	private VehiculoStrategy moto;
 
 	@Override
 	public Integer contarVehiculos(TipoVehiculoEnum tipoVehiculo) {
@@ -59,14 +67,9 @@ public class EstacionamientoDominioImpl implements EstacionamientoDominio {
 		if (tieneRestriccion(vehiculoDto.getPlaca())) {
 			throw new EstacionamientoException(EstacionamientoConstants.MENSAJE_ERROR_NO_INGRESO_FIN_SEMANA);
 		}
-		VehiculoStrategyContext vehiculoStrategyContex = null;
-		if (vehiculoDto.getTipo() == TipoVehiculoEnum.CARRO) {
-			vehiculoStrategyContex = new VehiculoStrategyContext(new CarroStrategy());
-		} else {
-			vehiculoStrategyContex = new VehiculoStrategyContext(new MotoStrategy());
-		}
+		VehiculoContext vehiculoContex = new VehiculoContext(vehiculoDto);
 		int numeroVehiculos = contarVehiculos(vehiculoDto.getTipo());
-		if (vehiculoStrategyContex.validarCupo(numeroVehiculos)) {
+		if (vehiculoContex.validarCupo(numeroVehiculos)) {
 			throw new EstacionamientoException(EstacionamientoConstants.MENSAJE_ERROR_NO_HAY_CUPO);
 		}
 		VehiculoEntity vehiculoEntity = new VehiculoEntity(vehiculoDto.getPlaca(), vehiculoDto.getTipo(),
@@ -75,7 +78,6 @@ public class EstacionamientoDominioImpl implements EstacionamientoDominio {
 				"prueba", new Date());
 		vehiculoRepositorio.save(vehiculoEntity);
 		estacionamientoRepositorio.save(estacionamientoEntity);
-
 	}
 
 	@Override
