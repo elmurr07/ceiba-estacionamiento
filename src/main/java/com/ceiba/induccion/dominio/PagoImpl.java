@@ -7,7 +7,7 @@ import com.ceiba.induccion.persistencia.entidad.PagoEntity;
 
 @Transactional
 @Service
-public class PagoDominioImpl implements PagoDominio {
+public class PagoImpl implements Pago {
 
 	@Override
 	public PagoEntity guardarPago(PagoEntity pagoEntity) {

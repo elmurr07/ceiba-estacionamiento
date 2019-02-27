@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ceiba.induccion.dominio.EstacionamientoDominio;
+import com.ceiba.induccion.dominio.ServiciosDelVigilante;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
 
 @RestController
@@ -13,11 +13,11 @@ import com.ceiba.induccion.dominio.dto.VehiculoDto;
 public class EstacionamientoService {
 
 	@Autowired
-	private EstacionamientoDominio estacionamientoDominio;
+	private ServiciosDelVigilante serviciosDelVigilante;
 
 	@PostMapping("/registrar")
 	public void registrar(VehiculoDto vehiculoDto) {
-		estacionamientoDominio.registrarIngreso(vehiculoDto);
+		serviciosDelVigilante.registrarIngreso(vehiculoDto);
 	}
 
 }

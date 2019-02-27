@@ -8,7 +8,7 @@ import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
 import com.ceiba.induccion.utilidad.EstacionamientoConstants;
 
 @Component("moto")
-public class MotoStrategy implements VehiculoStrategy {
+public class Moto implements Vehiculo {
 
 	@Override
 	public double calcularCosto(VehiculoEntity vehiculo, Date fechaInicio, Date fechaFin) {

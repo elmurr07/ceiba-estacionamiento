@@ -18,9 +18,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ceiba.induccion.builder.VehiculoTestBuilder;
-import com.ceiba.induccion.dominio.CalendarioUtil;
+import com.ceiba.induccion.dominio.CalendarioVigilante;
 import com.ceiba.induccion.dominio.ServiciosDelVigilateImpl;
-import com.ceiba.induccion.dominio.VehiculoContext;
+import com.ceiba.induccion.dominio.VehiculoStrategy;
 import com.ceiba.induccion.dominio.VehiculoConversor;
 import com.ceiba.induccion.dominio.builder.EstacionamientoBuilder;
 import com.ceiba.induccion.dominio.builder.VehiculoBuilder;
@@ -44,13 +44,13 @@ public class EstacionamientoDominioTest {
 	private static final int MOTOS_EN_PARQUEADERO = 3;
 
 	@Mock
-	private CalendarioUtil calendarioUtil;
+	private CalendarioVigilante calendarioVigilante;
 
 	@Mock
 	private EstacionamientoRepositorio estacionamientoRepositorio;
 
 	@Mock
-	private VehiculoContext vehiculoContext;
+	private VehiculoStrategy vehiculoStrategy;
 
 	@Mock
 	private VehiculoConversor vehiculoConversor;
@@ -72,7 +72,7 @@ public class EstacionamientoDominioTest {
 		when(estacionamientoRepositorio.contarVehiculosEstacionados(TipoVehiculoEnum.MOTO))
 				.thenReturn(MOTOS_EN_PARQUEADERO);
 
-		when(vehiculoContext.validarCupo(MOTOS_EN_PARQUEADERO)).thenReturn(Boolean.TRUE);
+		when(vehiculoStrategy.validarCupo(MOTOS_EN_PARQUEADERO)).thenReturn(Boolean.TRUE);
 
 		VehiculoEntity vehiculoEntity = VehiculoBuilder.toEntity(vehiculoDto);
 		when(vehiculoConversor.crearVehiculo(any())).thenReturn(vehiculoEntity);
@@ -98,7 +98,7 @@ public class EstacionamientoDominioTest {
 		when(estacionamientoRepositorio.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO))
 				.thenReturn(CARROS_EN_PARQUEADERO);
 
-		when(vehiculoContext.validarCupo(CARROS_EN_PARQUEADERO)).thenReturn(Boolean.TRUE);
+		when(vehiculoStrategy.validarCupo(CARROS_EN_PARQUEADERO)).thenReturn(Boolean.TRUE);
 
 		VehiculoEntity vehiculoEntity = VehiculoBuilder.toEntity(vehiculoDto);
 		when(vehiculoConversor.crearVehiculo(any())).thenReturn(vehiculoEntity);
@@ -123,7 +123,7 @@ public class EstacionamientoDominioTest {
 		when(estacionamientoRepositorio.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO))
 				.thenReturn(EstacionamientoConstants.CUPO_MOTOS_PARQUEADERO);
 
-		when(vehiculoContext.validarCupo(EstacionamientoConstants.CUPO_MOTOS_PARQUEADERO)).thenReturn(Boolean.FALSE);
+		when(vehiculoStrategy.validarCupo(EstacionamientoConstants.CUPO_MOTOS_PARQUEADERO)).thenReturn(Boolean.FALSE);
 
 		// act
 		try {
@@ -146,7 +146,7 @@ public class EstacionamientoDominioTest {
 		when(estacionamientoRepositorio.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO))
 				.thenReturn(EstacionamientoConstants.CUPO_CARROS_PARQUEADERO);
 
-		when(vehiculoContext.validarCupo(EstacionamientoConstants.CUPO_CARROS_PARQUEADERO)).thenReturn(Boolean.FALSE);
+		when(vehiculoStrategy.validarCupo(EstacionamientoConstants.CUPO_CARROS_PARQUEADERO)).thenReturn(Boolean.FALSE);
 
 		// act
 		try {
@@ -166,7 +166,7 @@ public class EstacionamientoDominioTest {
 		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_CON_RESTRICCION)
 				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
 
-		when(calendarioUtil.dayWeekFromDate(any())).thenReturn(DayOfWeek.SUNDAY);
+		when(calendarioVigilante.dayWeekFromDate(any())).thenReturn(DayOfWeek.SUNDAY);
 
 		// act
 		try {

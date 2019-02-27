@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ceiba.induccion.builder.PagoTestBuilder;
-import com.ceiba.induccion.dominio.PagoDominio;
+import com.ceiba.induccion.dominio.Pago;
 import com.ceiba.induccion.persistencia.entidad.PagoEntity;
 
 @RunWith(SpringRunner.class)
@@ -23,7 +23,7 @@ public class PagoDominioTest {
 	private static final String USUARIO_REGISTRO = "user_test";
 
 	@Autowired
-	PagoDominio pagoDominio;
+	Pago pago;
 
 	@Test
 	public void guardarPagoTest() {

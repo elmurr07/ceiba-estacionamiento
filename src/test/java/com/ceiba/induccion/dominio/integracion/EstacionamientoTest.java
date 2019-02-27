@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ceiba.induccion.builder.VehiculoTestBuilder;
-import com.ceiba.induccion.dominio.EstacionamientoDominio;
+import com.ceiba.induccion.dominio.ServiciosDelVigilante;
 import com.ceiba.induccion.dominio.VehiculoConversor;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
 import com.ceiba.induccion.persistencia.entidad.EstacionamientoEntity;
@@ -23,7 +23,7 @@ import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 public class EstacionamientoTest {
 
 	@Autowired
-	private EstacionamientoDominio estacionamientoDominio;
+	private ServiciosDelVigilante serviciosDelVigilante;
 
 	@Autowired
 	private VehiculoConversor vehiculoConversor;
@@ -41,7 +41,7 @@ public class EstacionamientoTest {
 				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
 		// act
 		VehiculoEntity vehiculoEntity = vehiculoConversor.crearVehiculo(vehiculoDto);
-		EstacionamientoEntity estacionamientoEntity = estacionamientoDominio.crearEstacionamiento(vehiculoEntity);
+		EstacionamientoEntity estacionamientoEntity = serviciosDelVigilante.crearEstacionamiento(vehiculoEntity);
 
 		// assert
 		Assert.assertEquals(PLACA_VEHICULO_SIN_RESTRICCION_1, estacionamientoEntity.getVehiculo().getPlaca());
@@ -56,10 +56,10 @@ public class EstacionamientoTest {
 		VehiculoDto vehiculoDto2 = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_2)
 				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
 		// act
-		estacionamientoDominio.registrarIngreso(vehiculoDto1);
-		estacionamientoDominio.registrarIngreso(vehiculoDto2);
+		serviciosDelVigilante.registrarIngreso(vehiculoDto1);
+		serviciosDelVigilante.registrarIngreso(vehiculoDto2);
 
-		int conteo = estacionamientoDominio.contarVehiculos(TipoVehiculoEnum.CARRO);
+		int conteo = serviciosDelVigilante.contarVehiculos(TipoVehiculoEnum.CARRO);
 
 		// assert
 		Assert.assertEquals(TOTAL_CARROS_ESTACIONADOS, conteo);
@@ -74,10 +74,10 @@ public class EstacionamientoTest {
 				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
 
 		// act
-		estacionamientoDominio.registrarIngreso(vehiculoDto1);
-		estacionamientoDominio.registrarIngreso(vehiculoDto2);
+		serviciosDelVigilante.registrarIngreso(vehiculoDto1);
+		serviciosDelVigilante.registrarIngreso(vehiculoDto2);
 
-		int conteo = estacionamientoDominio.contarVehiculos(TipoVehiculoEnum.MOTO);
+		int conteo = serviciosDelVigilante.contarVehiculos(TipoVehiculoEnum.MOTO);
 
 		// assert
 		Assert.assertEquals(TOTAL_MOTOS_ESTACIONADAS, conteo);
@@ -90,7 +90,7 @@ public class EstacionamientoTest {
 				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
 
 		// act
-		EstacionamientoEntity estacionamientoEntity = estacionamientoDominio.registrarIngreso(vehiculoDto);
+		EstacionamientoEntity estacionamientoEntity = serviciosDelVigilante.registrarIngreso(vehiculoDto);
 
 		// assert
 		Assert.assertEquals(PLACA_VEHICULO_SIN_RESTRICCION_1, estacionamientoEntity.getVehiculo().getPlaca());
