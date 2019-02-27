@@ -3,8 +3,6 @@ package com.ceiba.induccion.dominio;
 import java.time.DayOfWeek;
 import java.util.Date;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +15,7 @@ import com.ceiba.induccion.persistencia.repositorio.EstacionamientoRepositorio;
 import com.ceiba.induccion.persistencia.repositorio.VehiculoRepositorio;
 import com.ceiba.induccion.utilidad.EstacionamientoConstants;
 import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
+import com.ceiba.induccion.utilidad.UsuarioConstants;
 import com.ceiba.induccion.utilidad.VehiculoConstants;
 
 @Transactional
@@ -32,16 +31,12 @@ public class EstacionamientoDominioImpl implements EstacionamientoDominio {
 	@Autowired
 	private EstacionamientoRepositorio estacionamientoRepositorio;
 
-	@Resource(name = "carro")
-	private VehiculoStrategy carro;
-
-	@Resource(name = "moto")
-	private VehiculoStrategy moto;
+	@Autowired
+	private VehiculoContext vehiculoContext;
 
 	@Override
 	public Integer contarVehiculos(TipoVehiculoEnum tipoVehiculo) {
-		// TODO Auto-generated method stub
-		return null;
+		return estacionamientoRepositorio.contarVehiculosEstacionados(tipoVehiculo);
 	}
 
 	@Override
@@ -57,25 +52,26 @@ public class EstacionamientoDominioImpl implements EstacionamientoDominio {
 	}
 
 	@Override
-	public void crearEstacionamiento(EstacionamientoEntity estacionamiento) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void registrarIngreso(VehiculoDto vehiculoDto) {
 		if (tieneRestriccion(vehiculoDto.getPlaca())) {
 			throw new EstacionamientoException(EstacionamientoConstants.MENSAJE_ERROR_NO_INGRESO_FIN_SEMANA);
 		}
-		VehiculoContext vehiculoContex = new VehiculoContext(vehiculoDto);
+
+		if (vehiculoDto.getTipo() == TipoVehiculoEnum.CARRO) {
+			vehiculoContext.setVehiculoStrategy(new CarroStrategy());
+		} else {
+			vehiculoContext.setVehiculoStrategy(new MotoStrategy());
+		}
+
 		int numeroVehiculos = contarVehiculos(vehiculoDto.getTipo());
-		if (vehiculoContex.validarCupo(numeroVehiculos)) {
+		if (!vehiculoContext.validarCupo(numeroVehiculos)) {
 			throw new EstacionamientoException(EstacionamientoConstants.MENSAJE_ERROR_NO_HAY_CUPO);
 		}
+
 		VehiculoEntity vehiculoEntity = new VehiculoEntity(vehiculoDto.getPlaca(), vehiculoDto.getTipo(),
-				vehiculoDto.getCilindraje(), "usuario_test", new Date());
+				vehiculoDto.getCilindraje(), UsuarioConstants.USUARIO_SISTEMA, new Date());
 		EstacionamientoEntity estacionamientoEntity = new EstacionamientoEntity(vehiculoEntity, new Date(), null,
-				"prueba", new Date());
+				UsuarioConstants.USUARIO_SISTEMA, new Date());
 		vehiculoRepositorio.save(vehiculoEntity);
 		estacionamientoRepositorio.save(estacionamientoEntity);
 	}

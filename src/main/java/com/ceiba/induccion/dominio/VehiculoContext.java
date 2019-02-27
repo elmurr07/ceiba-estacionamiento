@@ -1,21 +1,18 @@
 package com.ceiba.induccion.dominio;
 
-import java.sql.Date;
+import java.util.Date;
 
-import com.ceiba.induccion.dominio.dto.VehiculoDto;
+import org.springframework.stereotype.Component;
+
 import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
-import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 
+@Component
 public class VehiculoContext {
 
 	private VehiculoStrategy vehiculoStrategy;
 
-	public VehiculoContext(VehiculoDto vehiculoDto) {
-		if (vehiculoDto.getTipo() == TipoVehiculoEnum.CARRO) {
-			this.vehiculoStrategy = new CarroStrategy();
-		} else {
-			this.vehiculoStrategy = new MotoStrategy();
-		}
+	public void setVehiculoStrategy(VehiculoStrategy vehiculoStrategy) {
+		this.vehiculoStrategy = vehiculoStrategy;
 	}
 
 	public boolean validarCupo(int numero) {
