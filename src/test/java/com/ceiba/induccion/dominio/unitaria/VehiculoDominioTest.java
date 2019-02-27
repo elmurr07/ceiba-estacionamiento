@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ceiba.induccion.builder.VehiculoTestBuilder;
-import com.ceiba.induccion.dominio.VehiculoDominio;
+import com.ceiba.induccion.dominio.VehiculoConversor;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
 import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
 import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
@@ -23,7 +23,7 @@ public class VehiculoDominioTest {
 	private static final Integer CILINDRAJE_VEHICULO = 200;
 
 	@Autowired
-	private VehiculoDominio vehiculoDominio;
+	private VehiculoConversor vehiculoConversor;
 
 	@Test
 	public void guardarVehiculo() {
@@ -32,7 +32,7 @@ public class VehiculoDominioTest {
 				.conTipo(TipoVehiculoEnum.CARRO).conCilindraje(CILINDRAJE_VEHICULO).buildDto();
 
 		// act
-		VehiculoEntity vehiculoAlmacenado = vehiculoDominio.crearVehiculo(vehiculoDto);
+		VehiculoEntity vehiculoAlmacenado = vehiculoConversor.crearVehiculo(vehiculoDto);
 
 		// assert
 		Assert.assertEquals(PLACA_VEHICULO, vehiculoAlmacenado.getPlaca());

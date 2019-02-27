@@ -19,9 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ceiba.induccion.builder.VehiculoTestBuilder;
 import com.ceiba.induccion.dominio.CalendarioUtil;
-import com.ceiba.induccion.dominio.EstacionamientoDominioImpl;
+import com.ceiba.induccion.dominio.ServiciosDelVigilateImpl;
 import com.ceiba.induccion.dominio.VehiculoContext;
-import com.ceiba.induccion.dominio.VehiculoDominio;
+import com.ceiba.induccion.dominio.VehiculoConversor;
 import com.ceiba.induccion.dominio.builder.EstacionamientoBuilder;
 import com.ceiba.induccion.dominio.builder.VehiculoBuilder;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
@@ -53,10 +53,10 @@ public class EstacionamientoDominioTest {
 	private VehiculoContext vehiculoContext;
 
 	@Mock
-	private VehiculoDominio vehiculoDominio;
+	private VehiculoConversor vehiculoConversor;
 
 	@InjectMocks
-	private EstacionamientoDominioImpl estacionamientoDominio;
+	private ServiciosDelVigilateImpl estacionamientoDominio;
 
 	@Before
 	public void setUp() {
@@ -75,7 +75,7 @@ public class EstacionamientoDominioTest {
 		when(vehiculoContext.validarCupo(MOTOS_EN_PARQUEADERO)).thenReturn(Boolean.TRUE);
 
 		VehiculoEntity vehiculoEntity = VehiculoBuilder.toEntity(vehiculoDto);
-		when(vehiculoDominio.crearVehiculo(any())).thenReturn(vehiculoEntity);
+		when(vehiculoConversor.crearVehiculo(any())).thenReturn(vehiculoEntity);
 
 		EstacionamientoEntity estacionamientoEntity = EstacionamientoBuilder.toEntity(vehiculoEntity);
 		when(estacionamientoRepositorio.save(any())).thenReturn(estacionamientoEntity);
@@ -101,7 +101,7 @@ public class EstacionamientoDominioTest {
 		when(vehiculoContext.validarCupo(CARROS_EN_PARQUEADERO)).thenReturn(Boolean.TRUE);
 
 		VehiculoEntity vehiculoEntity = VehiculoBuilder.toEntity(vehiculoDto);
-		when(vehiculoDominio.crearVehiculo(any())).thenReturn(vehiculoEntity);
+		when(vehiculoConversor.crearVehiculo(any())).thenReturn(vehiculoEntity);
 
 		EstacionamientoEntity estacionamientoEntity = EstacionamientoBuilder.toEntity(vehiculoEntity);
 		when(estacionamientoRepositorio.save(any())).thenReturn(estacionamientoEntity);

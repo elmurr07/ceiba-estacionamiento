@@ -20,13 +20,13 @@ import com.ceiba.induccion.utilidad.VehiculoConstants;
 
 @Transactional
 @Service
-public class EstacionamientoDominioImpl implements EstacionamientoDominio {
+public class ServiciosDelVigilateImpl implements EstacionamientoDominio {
 
 	@Autowired
 	private CalendarioUtil calendarioUtil;
 
 	@Autowired
-	private VehiculoDominio vehiculoDominio;
+	private VehiculoConversor vehiculoConversor;
 
 	@Autowired
 	private EstacionamientoRepositorio estacionamientoRepositorio;
@@ -63,7 +63,7 @@ public class EstacionamientoDominioImpl implements EstacionamientoDominio {
 			throw new EstacionamientoException(EstacionamientoConstants.MENSAJE_ERROR_NO_HAY_CUPO);
 		}
 
-		VehiculoEntity vehiculoEntity = vehiculoDominio.crearVehiculo(vehiculoDto);
+		VehiculoEntity vehiculoEntity = vehiculoConversor.crearVehiculo(vehiculoDto);
 		return this.crearEstacionamiento(vehiculoEntity);
 	}
 

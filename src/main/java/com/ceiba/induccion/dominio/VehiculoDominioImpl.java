@@ -13,7 +13,7 @@ import com.ceiba.induccion.utilidad.UsuarioConstants;
 
 @Service
 @Transactional
-public class VehiculoDominioImpl implements VehiculoDominio {
+public class VehiculoDominioImpl implements VehiculoConversor {
 
 	@Autowired
 	private VehiculoRepositorio vehiculoRepositorio;
