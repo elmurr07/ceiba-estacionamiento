@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
 import com.ceiba.induccion.dominio.excepcion.EstacionamientoException;
 import com.ceiba.induccion.persistencia.entidad.EstacionamientoEntity;
+import com.ceiba.induccion.persistencia.entidad.PagoEntity;
 import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
 import com.ceiba.induccion.persistencia.repositorio.EstacionamientoRepositorio;
-import com.ceiba.induccion.persistencia.repositorio.VehiculoRepositorio;
 import com.ceiba.induccion.utilidad.EstacionamientoConstants;
 import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 import com.ceiba.induccion.utilidad.UsuarioConstants;
@@ -26,7 +26,7 @@ public class EstacionamientoDominioImpl implements EstacionamientoDominio {
 	private CalendarioUtil calendarioUtil;
 
 	@Autowired
-	private VehiculoRepositorio vehiculoRepositorio;
+	private VehiculoDominio vehiculoDominio;
 
 	@Autowired
 	private EstacionamientoRepositorio estacionamientoRepositorio;
@@ -35,24 +35,19 @@ public class EstacionamientoDominioImpl implements EstacionamientoDominio {
 	private VehiculoContext vehiculoContext;
 
 	@Override
+	public EstacionamientoEntity crearEstacionamiento(VehiculoEntity vehiculoEntity) {
+		EstacionamientoEntity estacionamientoEntity = new EstacionamientoEntity(vehiculoEntity, new Date(), null,
+				UsuarioConstants.USUARIO_SISTEMA, new Date());
+		return estacionamientoRepositorio.save(estacionamientoEntity);
+	}
+
+	@Override
 	public Integer contarVehiculos(TipoVehiculoEnum tipoVehiculo) {
 		return estacionamientoRepositorio.contarVehiculosEstacionados(tipoVehiculo);
 	}
 
 	@Override
-	public Boolean existeCupoMoto() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean existeCupoCarro() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void registrarIngreso(VehiculoDto vehiculoDto) {
+	public EstacionamientoEntity registrarIngreso(VehiculoDto vehiculoDto) {
 		if (tieneRestriccion(vehiculoDto.getPlaca())) {
 			throw new EstacionamientoException(EstacionamientoConstants.MENSAJE_ERROR_NO_INGRESO_FIN_SEMANA);
 		}
@@ -68,12 +63,8 @@ public class EstacionamientoDominioImpl implements EstacionamientoDominio {
 			throw new EstacionamientoException(EstacionamientoConstants.MENSAJE_ERROR_NO_HAY_CUPO);
 		}
 
-		VehiculoEntity vehiculoEntity = new VehiculoEntity(vehiculoDto.getPlaca(), vehiculoDto.getTipo(),
-				vehiculoDto.getCilindraje(), UsuarioConstants.USUARIO_SISTEMA, new Date());
-		EstacionamientoEntity estacionamientoEntity = new EstacionamientoEntity(vehiculoEntity, new Date(), null,
-				UsuarioConstants.USUARIO_SISTEMA, new Date());
-		vehiculoRepositorio.save(vehiculoEntity);
-		estacionamientoRepositorio.save(estacionamientoEntity);
+		VehiculoEntity vehiculoEntity = vehiculoDominio.crearVehiculo(vehiculoDto);
+		return this.crearEstacionamiento(vehiculoEntity);
 	}
 
 	@Override
@@ -84,6 +75,12 @@ public class EstacionamientoDominioImpl implements EstacionamientoDominio {
 		DayOfWeek diaHoy = calendarioUtil.dayWeekFromDate(new Date());
 		return placa.charAt(0) == VehiculoConstants.LETRA_RESTRICCION_ACCESO
 				&& (diaHoy == DayOfWeek.SUNDAY || diaHoy == DayOfWeek.MONDAY);
+	}
+
+	@Override
+	public PagoEntity registrarSalida(long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -8,9 +8,9 @@ import com.ceiba.induccion.persistencia.entidad.PagoEntity;
 public class PagoDominioImpl implements PagoDominio {
 
 	@Override
-	public void guardarPago(PagoEntity pagoEntity) {
+	public PagoEntity guardarPago(PagoEntity pagoEntity) {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 }

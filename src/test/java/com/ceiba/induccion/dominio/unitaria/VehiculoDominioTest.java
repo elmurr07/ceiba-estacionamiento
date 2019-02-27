@@ -17,7 +17,7 @@ import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class VehiculoTest {
+public class VehiculoDominioTest {
 
 	private static final String PLACA_VEHICULO = "PLT652";
 	private static final Integer CILINDRAJE_VEHICULO = 200;
@@ -32,12 +32,12 @@ public class VehiculoTest {
 				.conTipo(TipoVehiculoEnum.CARRO).conCilindraje(CILINDRAJE_VEHICULO).buildDto();
 
 		// act
-		VehiculoEntity vehiculo = vehiculoDominio.crearVehiculo(vehiculoDto);
+		VehiculoEntity vehiculoAlmacenado = vehiculoDominio.crearVehiculo(vehiculoDto);
 
 		// assert
-		Assert.assertEquals(PLACA_VEHICULO, vehiculo.getPlaca());
-		Assert.assertEquals(TipoVehiculoEnum.CARRO, vehiculo.getTipo());
-		Assert.assertEquals(CILINDRAJE_VEHICULO, vehiculo.getCilindraje());
+		Assert.assertEquals(PLACA_VEHICULO, vehiculoAlmacenado.getPlaca());
+		Assert.assertEquals(TipoVehiculoEnum.CARRO, vehiculoAlmacenado.getTipo());
+		Assert.assertEquals(CILINDRAJE_VEHICULO, vehiculoAlmacenado.getCilindraje());
 	}
 
 }

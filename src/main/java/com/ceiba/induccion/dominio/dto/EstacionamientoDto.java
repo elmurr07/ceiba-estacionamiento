@@ -8,6 +8,17 @@ public class EstacionamientoDto {
 	private VehiculoDto vehiculo;
 	private Date inicio;
 
+	public EstacionamientoDto() {
+		// constructor vacio
+	}
+
+	public EstacionamientoDto(long id, VehiculoDto vehiculo, Date inicio) {
+		super();
+		this.id = id;
+		this.vehiculo = vehiculo;
+		this.inicio = inicio;
+	}
+
 	public long getId() {
 		return id;
 	}

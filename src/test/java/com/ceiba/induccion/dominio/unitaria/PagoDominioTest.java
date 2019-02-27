@@ -2,6 +2,7 @@ package com.ceiba.induccion.dominio.unitaria;
 
 import java.util.Date;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,11 @@ import com.ceiba.induccion.persistencia.entidad.PagoEntity;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class PagoTest {
+public class PagoDominioTest {
 
-	private static final double VALOR_PAGO = 9000;
+	private static final double VALOR_PAGO = 9_000;
 	private static final String USUARIO_REGISTRO = "user_test";
-	
+
 	@Autowired
 	PagoDominio pagoDominio;
 
@@ -31,10 +32,10 @@ public class PagoTest {
 				.conFecha(new Date()).build();
 
 		// act
-		pagoDominio.guardarPago(pagoEntity);
+		PagoEntity pagoAlmacenado = pagoDominio.guardarPago(pagoEntity);
 
 		// assert
-		assert(true);
+		Assert.assertEquals(VALOR_PAGO, pagoAlmacenado.getValor(), 0);
 	}
 
 }

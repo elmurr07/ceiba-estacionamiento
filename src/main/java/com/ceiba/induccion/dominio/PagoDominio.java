@@ -4,6 +4,6 @@ import com.ceiba.induccion.persistencia.entidad.PagoEntity;
 
 public interface PagoDominio {
 
-	void guardarPago(PagoEntity pagoEntity);
+	PagoEntity guardarPago(PagoEntity pagoEntity);
 
 }
