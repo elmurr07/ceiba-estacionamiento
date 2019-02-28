@@ -1,9 +1,10 @@
 package com.ceiba.induccion.dominio;
 
-import com.ceiba.induccion.persistencia.entidad.PagoEntity;
+import com.ceiba.induccion.dominio.dto.PagoDto;
+import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
 
 public interface Pago {
 
-	PagoEntity guardarPago(PagoEntity pagoEntity);
+	PagoDto registrarPago(RegistroEntity registroEntity, double valor);
 
 }

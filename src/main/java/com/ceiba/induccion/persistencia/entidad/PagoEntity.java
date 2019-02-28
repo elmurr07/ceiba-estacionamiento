@@ -7,8 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
-@Entity(name = "Pago")
+@Entity(name = "pago")
 public class PagoEntity {
 
 	@Id
@@ -18,15 +20,20 @@ public class PagoEntity {
 	@Column(nullable = false)
 	private double valor;
 
+	@OneToOne(optional = false)
+	@JoinColumn(name = "registro")
+	private RegistroEntity registroEntity;
+
 	@Column(nullable = false)
 	private String usuario;
 
 	@Column(nullable = false)
 	private Date fecha;
 
-	public PagoEntity(double valor, String usuario, Date fecha) {
+	public PagoEntity(double valor, RegistroEntity registroEntity, String usuario, Date fecha) {
 		super();
 		this.valor = valor;
+		this.registroEntity = registroEntity;
 		this.usuario = usuario;
 		this.fecha = fecha;
 	}
@@ -45,6 +52,14 @@ public class PagoEntity {
 
 	public void setValor(double valor) {
 		this.valor = valor;
+	}
+
+	public RegistroEntity getRegistroEntity() {
+		return registroEntity;
+	}
+
+	public void setRegistroEntity(RegistroEntity registroEntity) {
+		this.registroEntity = registroEntity;
 	}
 
 	public String getUsuario() {

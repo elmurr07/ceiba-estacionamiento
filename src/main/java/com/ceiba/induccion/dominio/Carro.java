@@ -1,10 +1,8 @@
 package com.ceiba.induccion.dominio;
 
-import java.util.Date;
-
 import org.springframework.stereotype.Component;
 
-import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
+import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
 import com.ceiba.induccion.utilidad.CalendarUtil;
 import com.ceiba.induccion.utilidad.RegistroConstants;
 
@@ -17,9 +15,9 @@ public class Carro implements Vehiculo {
 	private static final long HORAS_DIA = 24;
 
 	@Override
-	public double calcularCosto(VehiculoEntity vehiculo, Date fechaInicio, Date fechaFin) {
+	public double calcularCosto(RegistroEntity registroEntity) {
 		double costo = 0;
-		long totalHoras = CalendarUtil.horasEntreFechas(fechaInicio, fechaFin);
+		long totalHoras = CalendarUtil.horasEntreFechas(registroEntity.getInicio(), registroEntity.getFin());
 
 		long diasParqueo = totalHoras / HORAS_DIA;
 		long horasParqueo = totalHoras % HORAS_DIA;

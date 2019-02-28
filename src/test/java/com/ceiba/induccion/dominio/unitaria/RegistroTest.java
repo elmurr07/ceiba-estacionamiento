@@ -32,7 +32,7 @@ public class RegistroTest {
 				.conTipo(TipoVehiculoEnum.CARRO).conCilindraje(CILINDRAJE_VEHICULO).buildDto();
 
 		// act
-		RegistroDto registroAlmacenado = registro.registrarVehiculo(vehiculoDto);
+		RegistroDto registroAlmacenado = registro.registrarIngresoVehiculo(vehiculoDto);
 
 		// assert
 		Assert.assertEquals(PLACA_VEHICULO, registroAlmacenado.getVehiculo().getPlaca());

@@ -26,7 +26,6 @@ import com.ceiba.induccion.dominio.VehiculoStrategy;
 import com.ceiba.induccion.dominio.dto.RegistroDto;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
 import com.ceiba.induccion.dominio.excepcion.RegistroException;
-import com.ceiba.induccion.persistencia.repositorio.RegistroRepositorio;
 import com.ceiba.induccion.utilidad.RegistroConstants;
 import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 
@@ -43,9 +42,6 @@ public class ServiciosDelVigilanteTest {
 
 	@Mock
 	private CalendarioVigilante calendarioVigilante;
-
-	@Mock
-	private RegistroRepositorio registroRepositorio;
 
 	@Mock
 	private VehiculoStrategy vehiculoStrategy;
@@ -67,14 +63,12 @@ public class ServiciosDelVigilanteTest {
 		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION)
 				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
 
-		when(registroRepositorio.contarVehiculosEstacionados(TipoVehiculoEnum.MOTO))
-				.thenReturn(MOTOS_EN_PARQUEADERO);
+		when(registro.contarVehiculosEstacionados(TipoVehiculoEnum.MOTO)).thenReturn(MOTOS_EN_PARQUEADERO);
 
 		when(vehiculoStrategy.validarCupo(TipoVehiculoEnum.MOTO, MOTOS_EN_PARQUEADERO)).thenReturn(Boolean.TRUE);
 
-		RegistroDto registroDto = RegistroTestBuilder.defaultValues().conVehiculo(vehiculoDto)
-				.buildDto();
-		when(registro.registrarVehiculo(any())).thenReturn(registroDto);
+		RegistroDto registroDto = RegistroTestBuilder.defaultValues().conVehiculo(vehiculoDto).buildDto();
+		when(registro.registrarIngresoVehiculo(any())).thenReturn(registroDto);
 
 		// act
 		RegistroDto registroAlmacenado = serviciosDelVigilate.registrarIngreso(vehiculoDto);
@@ -91,14 +85,12 @@ public class ServiciosDelVigilanteTest {
 		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION)
 				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
 
-		when(registroRepositorio.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO))
-				.thenReturn(CARROS_EN_PARQUEADERO);
+		when(registro.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO)).thenReturn(CARROS_EN_PARQUEADERO);
 
 		when(vehiculoStrategy.validarCupo(TipoVehiculoEnum.CARRO, CARROS_EN_PARQUEADERO)).thenReturn(Boolean.TRUE);
 
-		RegistroDto registroDto = RegistroTestBuilder.defaultValues().conVehiculo(vehiculoDto)
-				.buildDto();
-		when(registroRepositorio.save(any())).thenReturn(registroDto);
+		RegistroDto registroDto = RegistroTestBuilder.defaultValues().conVehiculo(vehiculoDto).buildDto();
+		when(registro.registrarIngresoVehiculo(any())).thenReturn(registroDto);
 
 		// act
 		RegistroDto registroAlmacenado = serviciosDelVigilate.registrarIngreso(vehiculoDto);
@@ -114,7 +106,7 @@ public class ServiciosDelVigilanteTest {
 		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION)
 				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
 
-		when(registroRepositorio.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO))
+		when(registro.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO))
 				.thenReturn(RegistroConstants.CUPO_MOTOS_PARQUEADERO);
 
 		when(vehiculoStrategy.validarCupo(TipoVehiculoEnum.MOTO, RegistroConstants.CUPO_MOTOS_PARQUEADERO))
@@ -138,7 +130,7 @@ public class ServiciosDelVigilanteTest {
 		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION)
 				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
 
-		when(registroRepositorio.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO))
+		when(registro.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO))
 				.thenReturn(RegistroConstants.CUPO_CARROS_PARQUEADERO);
 
 		when(vehiculoStrategy.validarCupo(TipoVehiculoEnum.CARRO, RegistroConstants.CUPO_CARROS_PARQUEADERO))

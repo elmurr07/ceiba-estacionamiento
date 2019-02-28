@@ -7,13 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ceiba.induccion.dominio.dto.PagoDto;
 import com.ceiba.induccion.dominio.dto.RegistroDto;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
 import com.ceiba.induccion.dominio.excepcion.RegistroException;
-import com.ceiba.induccion.persistencia.entidad.PagoEntity;
-import com.ceiba.induccion.persistencia.repositorio.RegistroRepositorio;
+import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
 import com.ceiba.induccion.utilidad.RegistroConstants;
-import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 import com.ceiba.induccion.utilidad.VehiculoConstants;
 
 @Transactional
@@ -24,10 +23,10 @@ public class ServiciosDelVigilateImpl implements ServiciosDelVigilante {
 	private CalendarioVigilante calendarioVigilante;
 
 	@Autowired
-	private RegistroRepositorio registroRepositorio;
+	private Registro registro;
 
 	@Autowired
-	private Registro registro;
+	private Pago pago;
 
 	@Autowired
 	private VehiculoStrategy vehiculoStrategy;
@@ -38,18 +37,19 @@ public class ServiciosDelVigilateImpl implements ServiciosDelVigilante {
 			throw new RegistroException(RegistroConstants.MENSAJE_ERROR_NO_INGRESO_FIN_SEMANA);
 		}
 
-		int numeroVehiculos = contarVehiculos(vehiculoDto.getTipo());
+		int numeroVehiculos = registro.contarVehiculosEstacionados(vehiculoDto.getTipo());
 		if (!vehiculoStrategy.validarCupo(vehiculoDto.getTipo(), numeroVehiculos)) {
 			throw new RegistroException(RegistroConstants.MENSAJE_ERROR_NO_HAY_CUPO);
 		}
 
-		return registro.registrarVehiculo(vehiculoDto);
+		return registro.registrarIngresoVehiculo(vehiculoDto);
 	}
 
 	@Override
-	public PagoEntity registrarSalida(long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public PagoDto registrarSalida(long idRegistro) {
+		RegistroEntity registroEntity = registro.registrarSalidaVehiculo(idRegistro);
+		double costoCalculado = vehiculoStrategy.ejecutarCalculo(registroEntity);
+		return pago.registrarPago(registroEntity, costoCalculado);
 	}
 
 	@Override
@@ -60,11 +60,6 @@ public class ServiciosDelVigilateImpl implements ServiciosDelVigilante {
 		DayOfWeek diaHoy = calendarioVigilante.dayWeekFromDate(new Date());
 		return placa.charAt(0) == VehiculoConstants.LETRA_RESTRICCION_ACCESO
 				&& (diaHoy == DayOfWeek.SUNDAY || diaHoy == DayOfWeek.MONDAY);
-	}
-
-	@Override
-	public Integer contarVehiculos(TipoVehiculoEnum tipoVehiculo) {
-		return registroRepositorio.contarVehiculosEstacionados(tipoVehiculo);
 	}
 
 }

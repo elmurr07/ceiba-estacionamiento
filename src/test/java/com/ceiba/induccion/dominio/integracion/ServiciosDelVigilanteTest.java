@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ceiba.induccion.builder.VehiculoTestBuilder;
 import com.ceiba.induccion.dominio.Registro;
 import com.ceiba.induccion.dominio.ServiciosDelVigilante;
+import com.ceiba.induccion.dominio.dto.PagoDto;
 import com.ceiba.induccion.dominio.dto.RegistroDto;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
 import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
@@ -33,12 +34,12 @@ public class ServiciosDelVigilanteTest {
 	private static final int TOTAL_MOTOS_ESTACIONADAS = 2;
 
 	@Test
-	public void crearregistroTest() {
+	public void crearRegistroTest() {
 		// arrange
 		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_1)
 				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
 		// act
-		RegistroDto registroDto = registro.registrarVehiculo(vehiculoDto);
+		RegistroDto registroDto = registro.registrarIngresoVehiculo(vehiculoDto);
 
 		// assert
 		Assert.assertEquals(PLACA_VEHICULO_SIN_RESTRICCION_1, registroDto.getVehiculo().getPlaca());
@@ -56,7 +57,7 @@ public class ServiciosDelVigilanteTest {
 		serviciosDelVigilante.registrarIngreso(vehiculoDto1);
 		serviciosDelVigilante.registrarIngreso(vehiculoDto2);
 
-		int conteo = serviciosDelVigilante.contarVehiculos(TipoVehiculoEnum.CARRO);
+		int conteo = registro.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO);
 
 		// assert
 		Assert.assertEquals(TOTAL_CARROS_ESTACIONADOS, conteo);
@@ -74,7 +75,7 @@ public class ServiciosDelVigilanteTest {
 		serviciosDelVigilante.registrarIngreso(vehiculoDto1);
 		serviciosDelVigilante.registrarIngreso(vehiculoDto2);
 
-		int conteo = serviciosDelVigilante.contarVehiculos(TipoVehiculoEnum.MOTO);
+		int conteo = registro.contarVehiculosEstacionados(TipoVehiculoEnum.MOTO);
 
 		// assert
 		Assert.assertEquals(TOTAL_MOTOS_ESTACIONADAS, conteo);
@@ -94,32 +95,32 @@ public class ServiciosDelVigilanteTest {
 		Assert.assertEquals(TipoVehiculoEnum.MOTO, registroDto.getVehiculo().getTipo());
 	}
 
-//	@Test
-//	public void registrarSalidaMotoTest() {
-//		// arrage
-//		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_1)
-//				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
-//
-//		// act
-//		registroEntity registroEntity = registroDominio.registrarIngreso(vehiculoDto);
-//		PagoEntity pagoEntity = registroDominio.registrarSalida(registroEntity.getId());
-//
-//		// assert
-//		Assert.assertNotNull(pagoEntity.getValor());
-//	}
-//
-//	@Test
-//	public void registrarSalidaCarroTest() {
-//		// arrage
-//		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_2)
-//				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
-//
-//		// act
-//		registroEntity registroEntity = registroDominio.registrarIngreso(vehiculoDto);
-//		PagoEntity pagoEntity = registroDominio.registrarSalida(registroEntity.getId());
-//
-//		// assert
-//		Assert.assertNotNull(pagoEntity.getValor());
-//	}
+	@Test
+	public void registrarSalidaMotoTest() {
+		// arrage
+		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_1)
+				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
+
+		// act
+		RegistroDto registroDto = serviciosDelVigilante.registrarIngreso(vehiculoDto);
+		PagoDto pagoDto = serviciosDelVigilante.registrarSalida(registroDto.getId());
+
+		// assert
+		Assert.assertNotNull(pagoDto.getValor());
+	}
+
+	@Test
+	public void registrarSalidaCarroTest() {
+		// arrage
+		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_2)
+				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
+
+		// act
+		RegistroDto registroDto = serviciosDelVigilante.registrarIngreso(vehiculoDto);
+		PagoDto pagoDto = serviciosDelVigilante.registrarSalida(registroDto.getId());
+
+		// assert
+		Assert.assertNotNull(pagoDto.getValor());
+	}
 
 }

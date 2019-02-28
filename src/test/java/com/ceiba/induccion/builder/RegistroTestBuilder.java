@@ -10,8 +10,6 @@ public class RegistroTestBuilder {
 	private VehiculoDto vehiculo;
 	private Date inicio;
 	private Date fin;
-	private String usuario;
-	private Date fecha;
 
 	private RegistroTestBuilder() {
 		super();
@@ -36,18 +34,8 @@ public class RegistroTestBuilder {
 		return this;
 	}
 
-	public RegistroTestBuilder conUsuario(String usuario) {
-		this.usuario = usuario;
-		return this;
-	}
-
-	public RegistroTestBuilder conFecha(Date fecha) {
-		this.fecha = fecha;
-		return this;
-	}
-
 	public RegistroDto buildDto() {
-		return new RegistroDto(0, vehiculo, inicio);
+		return new RegistroDto(0, vehiculo, inicio, fin);
 	}
 
 }

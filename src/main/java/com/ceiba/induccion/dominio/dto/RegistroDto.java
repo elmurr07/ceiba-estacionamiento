@@ -7,16 +7,18 @@ public class RegistroDto {
 	private long id;
 	private VehiculoDto vehiculo;
 	private Date inicio;
+	private Date fin;
 
 	public RegistroDto() {
 		// constructor vacio
 	}
 
-	public RegistroDto(long id, VehiculoDto vehiculo, Date inicio) {
+	public RegistroDto(long id, VehiculoDto vehiculo, Date inicio, Date fin) {
 		super();
 		this.id = id;
 		this.vehiculo = vehiculo;
 		this.inicio = inicio;
+		this.fin = fin;
 	}
 
 	public long getId() {
@@ -41,6 +43,14 @@ public class RegistroDto {
 
 	public void setInicio(Date inicio) {
 		this.inicio = inicio;
+	}
+
+	public Date getFin() {
+		return fin;
+	}
+
+	public void setFin(Date fin) {
+		this.fin = fin;
 	}
 
 }

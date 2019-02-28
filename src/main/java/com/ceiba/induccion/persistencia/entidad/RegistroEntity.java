@@ -34,6 +34,10 @@ public class RegistroEntity {
 	@Column
 	private Date fecha;
 
+	public RegistroEntity() {
+		super();
+	}
+
 	public RegistroEntity(VehiculoEntity vehiculo, Date inicio, Date fin, String usuario, Date fecha) {
 		super();
 		this.vehiculo = vehiculo;

@@ -18,8 +18,8 @@ public class RegistroBuilder {
 		RegistroDto registroDto = null;
 
 		if (registroEntity != null) {
-			registroDto = new RegistroDto(registroEntity.getId(), vehiculoDto,
-					registroEntity.getInicio());
+			registroDto = new RegistroDto(registroEntity.getId(), vehiculoDto, registroEntity.getInicio(),
+					registroEntity.getFin());
 		}
 		return registroDto;
 	}
@@ -27,8 +27,8 @@ public class RegistroBuilder {
 	public static RegistroEntity toEntity(VehiculoEntity vehiculoEntity) {
 		RegistroEntity registroEntity = null;
 
-		registroEntity = new RegistroEntity(vehiculoEntity, new Date(), null,
-				UsuarioConstants.USUARIO_SISTEMA, new Date());
+		registroEntity = new RegistroEntity(vehiculoEntity, new Date(), null, UsuarioConstants.USUARIO_SISTEMA,
+				new Date());
 
 		return registroEntity;
 	}

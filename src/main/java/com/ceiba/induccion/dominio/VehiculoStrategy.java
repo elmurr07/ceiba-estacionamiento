@@ -1,12 +1,10 @@
 package com.ceiba.induccion.dominio;
 
-import java.util.Date;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
+import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
 import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 
 @Component
@@ -28,12 +26,12 @@ public class VehiculoStrategy {
 		return existeCupo;
 	}
 
-	public double ejecutarCalculo(TipoVehiculoEnum tipo, VehiculoEntity vehiculo, Date fechaInicio, Date fechaFin) {
+	public double ejecutarCalculo(RegistroEntity registroEntity) {
 		double costo;
-		if (tipo == TipoVehiculoEnum.CARRO) {
-			costo = carro.calcularCosto(vehiculo, fechaInicio, fechaFin);
+		if (registroEntity.getVehiculo().getTipo() == TipoVehiculoEnum.CARRO) {
+			costo = carro.calcularCosto(registroEntity);
 		} else {
-			costo = moto.calcularCosto(vehiculo, fechaInicio, fechaFin);
+			costo = moto.calcularCosto(registroEntity);
 		}
 		return costo;
 	}
