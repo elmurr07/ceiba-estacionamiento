@@ -1,8 +1,8 @@
 package com.ceiba.induccion.utilidad;
 
-public final class EstacionamientoConstants {
+public final class RegistroConstants {
 
-	private EstacionamientoConstants() {
+	private RegistroConstants() {
 		throw new IllegalStateException("Clase de utilidad");
 	}
 

@@ -1,13 +1,13 @@
 package com.ceiba.induccion.dominio;
 
-import com.ceiba.induccion.dominio.dto.EstacionamientoDto;
+import com.ceiba.induccion.dominio.dto.RegistroDto;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
 import com.ceiba.induccion.persistencia.entidad.PagoEntity;
 import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 
 public interface ServiciosDelVigilante {
 
-	EstacionamientoDto registrarIngreso(VehiculoDto vehiculoDto);
+	RegistroDto registrarIngreso(VehiculoDto vehiculoDto);
 
 	PagoEntity registrarSalida(long id);
 

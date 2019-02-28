@@ -1,14 +1,12 @@
 package com.ceiba.induccion.dominio;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
 import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
 import com.ceiba.induccion.utilidad.CalendarUtil;
-import com.ceiba.induccion.utilidad.EstacionamientoConstants;
+import com.ceiba.induccion.utilidad.RegistroConstants;
 
 @Component("carro")
 public class Carro implements Vehiculo {
@@ -21,9 +19,7 @@ public class Carro implements Vehiculo {
 	@Override
 	public double calcularCosto(VehiculoEntity vehiculo, Date fechaInicio, Date fechaFin) {
 		double costo = 0;
-		LocalDate fechaInicioLocal = CalendarUtil.dateToLocalDate(fechaInicio);
-		LocalDate fechaFinLocal = CalendarUtil.dateToLocalDate(fechaFin);
-		long totalHoras = ChronoUnit.DAYS.between(fechaInicioLocal, fechaFinLocal);
+		long totalHoras = CalendarUtil.horasEntreFechas(fechaInicio, fechaFin);
 
 		long diasParqueo = totalHoras / HORAS_DIA;
 		long horasParqueo = totalHoras % HORAS_DIA;
@@ -41,7 +37,7 @@ public class Carro implements Vehiculo {
 
 	@Override
 	public boolean existeCupo(int numero) {
-		return numero < EstacionamientoConstants.CUPO_CARROS_PARQUEADERO;
+		return numero < RegistroConstants.CUPO_CARROS_PARQUEADERO;
 	}
 
 }

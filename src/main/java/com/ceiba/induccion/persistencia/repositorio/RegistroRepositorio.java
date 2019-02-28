@@ -5,13 +5,13 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.ceiba.induccion.persistencia.entidad.EstacionamientoEntity;
+import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
 import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 
 @Repository
-public interface EstacionamientoRepositorio extends CrudRepository<EstacionamientoEntity, Long> {
+public interface RegistroRepositorio extends CrudRepository<RegistroEntity, Long> {
 
-	@Query("SELECT COUNT(e) FROM Estacionamiento e WHERE e.vehiculo.tipo = :tipo AND fin is null")
+	@Query("SELECT COUNT(r) FROM Registro r WHERE r.vehiculo.tipo = :tipo AND fin is null")
 	int contarVehiculosEstacionados(@Param("tipo") TipoVehiculoEnum tipo);
 
 }

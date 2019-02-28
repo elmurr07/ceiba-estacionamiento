@@ -9,24 +9,22 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ceiba.induccion.builder.VehiculoTestBuilder;
+import com.ceiba.induccion.dominio.Registro;
 import com.ceiba.induccion.dominio.ServiciosDelVigilante;
-import com.ceiba.induccion.dominio.VehiculoConversor;
+import com.ceiba.induccion.dominio.dto.RegistroDto;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
-import com.ceiba.induccion.persistencia.entidad.EstacionamientoEntity;
-import com.ceiba.induccion.persistencia.entidad.PagoEntity;
-import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
 import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class EstacionamientoTest {
+public class ServiciosDelVigilanteTest {
 
 	@Autowired
 	private ServiciosDelVigilante serviciosDelVigilante;
 
 	@Autowired
-	private VehiculoConversor vehiculoConversor;
+	private Registro registro;
 
 	private static final String PLACA_VEHICULO_SIN_RESTRICCION_1 = "FFH134";
 	private static final String PLACA_VEHICULO_SIN_RESTRICCION_2 = "FFH146";
@@ -35,17 +33,16 @@ public class EstacionamientoTest {
 	private static final int TOTAL_MOTOS_ESTACIONADAS = 2;
 
 	@Test
-	public void crearEstacionamientoTest() {
+	public void crearregistroTest() {
 		// arrange
 		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_1)
 				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
 		// act
-		VehiculoEntity vehiculoEntity = vehiculoConversor.crearVehiculo(vehiculoDto);
-		EstacionamientoEntity estacionamientoEntity = serviciosDelVigilante.crearEstacionamiento(vehiculoEntity);
+		RegistroDto registroDto = registro.registrarVehiculo(vehiculoDto);
 
 		// assert
-		Assert.assertEquals(PLACA_VEHICULO_SIN_RESTRICCION_1, estacionamientoEntity.getVehiculo().getPlaca());
-		Assert.assertEquals(TipoVehiculoEnum.CARRO, estacionamientoEntity.getVehiculo().getTipo());
+		Assert.assertEquals(PLACA_VEHICULO_SIN_RESTRICCION_1, registroDto.getVehiculo().getPlaca());
+		Assert.assertEquals(TipoVehiculoEnum.CARRO, registroDto.getVehiculo().getTipo());
 	}
 
 	@Test
@@ -90,11 +87,11 @@ public class EstacionamientoTest {
 				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
 
 		// act
-		EstacionamientoEntity estacionamientoEntity = serviciosDelVigilante.registrarIngreso(vehiculoDto);
+		RegistroDto registroDto = serviciosDelVigilante.registrarIngreso(vehiculoDto);
 
 		// assert
-		Assert.assertEquals(PLACA_VEHICULO_SIN_RESTRICCION_1, estacionamientoEntity.getVehiculo().getPlaca());
-		Assert.assertEquals(TipoVehiculoEnum.MOTO, estacionamientoEntity.getVehiculo().getTipo());
+		Assert.assertEquals(PLACA_VEHICULO_SIN_RESTRICCION_1, registroDto.getVehiculo().getPlaca());
+		Assert.assertEquals(TipoVehiculoEnum.MOTO, registroDto.getVehiculo().getTipo());
 	}
 
 //	@Test
@@ -104,8 +101,8 @@ public class EstacionamientoTest {
 //				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
 //
 //		// act
-//		EstacionamientoEntity estacionamientoEntity = estacionamientoDominio.registrarIngreso(vehiculoDto);
-//		PagoEntity pagoEntity = estacionamientoDominio.registrarSalida(estacionamientoEntity.getId());
+//		registroEntity registroEntity = registroDominio.registrarIngreso(vehiculoDto);
+//		PagoEntity pagoEntity = registroDominio.registrarSalida(registroEntity.getId());
 //
 //		// assert
 //		Assert.assertNotNull(pagoEntity.getValor());
@@ -118,8 +115,8 @@ public class EstacionamientoTest {
 //				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
 //
 //		// act
-//		EstacionamientoEntity estacionamientoEntity = estacionamientoDominio.registrarIngreso(vehiculoDto);
-//		PagoEntity pagoEntity = estacionamientoDominio.registrarSalida(estacionamientoEntity.getId());
+//		registroEntity registroEntity = registroDominio.registrarIngreso(vehiculoDto);
+//		PagoEntity pagoEntity = registroDominio.registrarSalida(registroEntity.getId());
 //
 //		// assert
 //		Assert.assertNotNull(pagoEntity.getValor());

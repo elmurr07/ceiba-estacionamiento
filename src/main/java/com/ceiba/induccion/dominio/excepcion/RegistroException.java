@@ -1,10 +1,10 @@
 package com.ceiba.induccion.dominio.excepcion;
 
-public class EstacionamientoException extends RuntimeException {
+public class RegistroException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public EstacionamientoException(String message) {
+	public RegistroException(String message) {
 		super(message);
 	}
 

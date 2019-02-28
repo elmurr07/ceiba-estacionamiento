@@ -9,8 +9,8 @@ import com.ceiba.induccion.dominio.ServiciosDelVigilante;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
 
 @RestController
-@RequestMapping("estacionamiento")
-public class EstacionamientoService {
+@RequestMapping("vigilante")
+public class ServiciosDelVigilanteService {
 
 	@Autowired
 	private ServiciosDelVigilante serviciosDelVigilante;

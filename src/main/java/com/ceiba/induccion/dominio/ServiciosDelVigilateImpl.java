@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ceiba.induccion.dominio.dto.EstacionamientoDto;
+import com.ceiba.induccion.dominio.dto.RegistroDto;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
-import com.ceiba.induccion.dominio.excepcion.EstacionamientoException;
+import com.ceiba.induccion.dominio.excepcion.RegistroException;
 import com.ceiba.induccion.persistencia.entidad.PagoEntity;
-import com.ceiba.induccion.persistencia.repositorio.EstacionamientoRepositorio;
-import com.ceiba.induccion.utilidad.EstacionamientoConstants;
+import com.ceiba.induccion.persistencia.repositorio.RegistroRepositorio;
+import com.ceiba.induccion.utilidad.RegistroConstants;
 import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 import com.ceiba.induccion.utilidad.VehiculoConstants;
 
@@ -24,7 +24,7 @@ public class ServiciosDelVigilateImpl implements ServiciosDelVigilante {
 	private CalendarioVigilante calendarioVigilante;
 
 	@Autowired
-	private EstacionamientoRepositorio estacionamientoRepositorio;
+	private RegistroRepositorio registroRepositorio;
 
 	@Autowired
 	private Registro registro;
@@ -33,14 +33,14 @@ public class ServiciosDelVigilateImpl implements ServiciosDelVigilante {
 	private VehiculoStrategy vehiculoStrategy;
 
 	@Override
-	public EstacionamientoDto registrarIngreso(VehiculoDto vehiculoDto) {
+	public RegistroDto registrarIngreso(VehiculoDto vehiculoDto) {
 		if (tieneRestriccion(vehiculoDto.getPlaca())) {
-			throw new EstacionamientoException(EstacionamientoConstants.MENSAJE_ERROR_NO_INGRESO_FIN_SEMANA);
+			throw new RegistroException(RegistroConstants.MENSAJE_ERROR_NO_INGRESO_FIN_SEMANA);
 		}
 
 		int numeroVehiculos = contarVehiculos(vehiculoDto.getTipo());
 		if (!vehiculoStrategy.validarCupo(vehiculoDto.getTipo(), numeroVehiculos)) {
-			throw new EstacionamientoException(EstacionamientoConstants.MENSAJE_ERROR_NO_HAY_CUPO);
+			throw new RegistroException(RegistroConstants.MENSAJE_ERROR_NO_HAY_CUPO);
 		}
 
 		return registro.registrarVehiculo(vehiculoDto);
@@ -64,7 +64,7 @@ public class ServiciosDelVigilateImpl implements ServiciosDelVigilante {
 
 	@Override
 	public Integer contarVehiculos(TipoVehiculoEnum tipoVehiculo) {
-		return estacionamientoRepositorio.contarVehiculosEstacionados(tipoVehiculo);
+		return registroRepositorio.contarVehiculosEstacionados(tipoVehiculo);
 	}
 
 }

@@ -11,8 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity(name = "Estacionamiento")
-public class EstacionamientoEntity {
+@Entity(name = "Registro")
+public class RegistroEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,7 +34,7 @@ public class EstacionamientoEntity {
 	@Column
 	private Date fecha;
 
-	public EstacionamientoEntity(VehiculoEntity vehiculo, Date inicio, Date fin, String usuario, Date fecha) {
+	public RegistroEntity(VehiculoEntity vehiculo, Date inicio, Date fin, String usuario, Date fecha) {
 		super();
 		this.vehiculo = vehiculo;
 		this.inicio = inicio;

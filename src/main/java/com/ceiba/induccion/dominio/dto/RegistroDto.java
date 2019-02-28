@@ -2,17 +2,17 @@ package com.ceiba.induccion.dominio.dto;
 
 import java.util.Date;
 
-public class EstacionamientoDto {
+public class RegistroDto {
 
 	private long id;
 	private VehiculoDto vehiculo;
 	private Date inicio;
 
-	public EstacionamientoDto() {
+	public RegistroDto() {
 		// constructor vacio
 	}
 
-	public EstacionamientoDto(long id, VehiculoDto vehiculo, Date inicio) {
+	public RegistroDto(long id, VehiculoDto vehiculo, Date inicio) {
 		super();
 		this.id = id;
 		this.vehiculo = vehiculo;
