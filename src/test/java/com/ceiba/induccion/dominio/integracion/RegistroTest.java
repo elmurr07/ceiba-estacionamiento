@@ -27,7 +27,7 @@ public class RegistroTest {
 
 	private static final String PLACA_VEHICULO_SIN_RESTRICCION_1 = "FFH134";
 	private static final String PLACA_VEHICULO_SIN_RESTRICCION_2 = "FFH146";
-	private static final String PLACA_VEHICULO_SIN_RESTRICCION_3 = "ALB741";
+	private static final String PLACA_VEHICULO_SIN_RESTRICCION_3 = "RLB741";
 	private static final Integer CILINDRAJE_MOTO = 550;
 	private static final int NUMERO_VEHICULOS_ESTACIONADOS = 3;
 

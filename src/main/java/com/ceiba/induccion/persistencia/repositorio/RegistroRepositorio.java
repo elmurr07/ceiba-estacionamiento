@@ -13,7 +13,7 @@ import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 @Repository
 public interface RegistroRepositorio extends CrudRepository<RegistroEntity, Long> {
 
-	@Query("SELECT COUNT(r) FROM Registro r WHERE r.vehiculo.tipo = :tipo AND fin is null")
+	@Query("SELECT COUNT(r) FROM registro r WHERE r.vehiculo.tipo = :tipo AND fin is null")
 	int contarVehiculosEstacionados(@Param("tipo") TipoVehiculoEnum tipo);
 
 	List<RegistroEntity> findByFinIsNull();

@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 public class PagoEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private long id;
 
 	@Column(nullable = false)

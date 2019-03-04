@@ -2,6 +2,7 @@ package com.ceiba.induccion.controlador;
 
 import java.rmi.RemoteException;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,7 @@ import com.ceiba.induccion.wsdl.TcrmResponse;
 
 @RestController
 @RequestMapping("trm")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TRMController {
 
 	private static final String CTRM_SERVICE_URL = "https://www.superfinanciera.gov.co/SuperfinancieraWebServiceTRM/TCRMServicesWebService/TCRMServicesWebService?WSDL";

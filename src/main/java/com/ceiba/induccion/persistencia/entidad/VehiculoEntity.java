@@ -12,11 +12,11 @@ import javax.persistence.Id;
 
 import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 
-@Entity(name = "Vehiculo")
+@Entity(name = "vehiculo")
 public class VehiculoEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private long id;
 
 	@Column(nullable = false)

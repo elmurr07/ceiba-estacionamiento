@@ -154,7 +154,7 @@ public class ServiciosDelVigilanteTest {
 		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_CON_RESTRICCION)
 				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
 
-		when(calendarioVigilante.dayWeekFromDate(any())).thenReturn(DayOfWeek.SUNDAY);
+		when(calendarioVigilante.dayWeekFromDate(any())).thenReturn(DayOfWeek.THURSDAY);
 
 		// act
 		try {

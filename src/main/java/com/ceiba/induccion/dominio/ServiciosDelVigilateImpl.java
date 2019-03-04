@@ -59,7 +59,7 @@ public class ServiciosDelVigilateImpl implements ServiciosDelVigilante {
 		}
 		DayOfWeek diaHoy = calendarioVigilante.dayWeekFromDate(new Date());
 		return placa.charAt(0) == VehiculoConstants.LETRA_RESTRICCION_ACCESO
-				&& (diaHoy == DayOfWeek.SUNDAY || diaHoy == DayOfWeek.MONDAY);
+				&& !(diaHoy == DayOfWeek.SUNDAY || diaHoy == DayOfWeek.MONDAY);
 	}
 
 }

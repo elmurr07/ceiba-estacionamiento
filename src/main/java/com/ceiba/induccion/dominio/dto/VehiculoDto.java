@@ -9,6 +9,10 @@ public class VehiculoDto {
 	private TipoVehiculoEnum tipo;
 	private Integer cilindraje;
 
+	public VehiculoDto() {
+		super();
+	}
+
 	public VehiculoDto(String placa, TipoVehiculoEnum tipo, Integer cilindraje) {
 		super();
 		this.placa = placa;
