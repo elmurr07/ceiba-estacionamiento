@@ -26,12 +26,14 @@ public class VehiculoStrategy {
 		return existeCupo;
 	}
 
-	public double ejecutarCalculo(RegistroEntity registroEntity) {
-		double costo;
-		if (registroEntity.getVehiculo().getTipo() == TipoVehiculoEnum.CARRO) {
-			costo = carro.calcularCosto(registroEntity);
-		} else {
-			costo = moto.calcularCosto(registroEntity);
+	public Double ejecutarCalculo(RegistroEntity registroEntity) {
+		Double costo = null;
+		if (registroEntity != null) {
+			if (registroEntity.getVehiculo().getTipo() == TipoVehiculoEnum.CARRO) {
+				costo = carro.calcularCosto(registroEntity);
+			} else {
+				costo = moto.calcularCosto(registroEntity);
+			}
 		}
 		return costo;
 	}

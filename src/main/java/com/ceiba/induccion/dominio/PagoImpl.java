@@ -21,10 +21,14 @@ public class PagoImpl implements Pago {
 	private PagoRepositorio pagoRepositorio;
 
 	@Override
-	public PagoDto registrarPago(RegistroEntity registroEntity, double valor) {
-		PagoEntity pagoEntity = new PagoEntity(valor, registroEntity, UsuarioConstants.USUARIO_SISTEMA, new Date());
-		pagoEntity = pagoRepositorio.save(pagoEntity);
-		return PagoBuilder.toDto(pagoEntity);
+	public PagoDto registrarPago(RegistroEntity registroEntity, Double valor) {
+		PagoDto pagoRetorno = null;
+		if (registroEntity != null) {
+			PagoEntity pagoEntity = new PagoEntity(valor, registroEntity, UsuarioConstants.USUARIO_SISTEMA, new Date());
+			pagoEntity = pagoRepositorio.save(pagoEntity);
+			pagoRetorno = PagoBuilder.toDto(pagoEntity);
+		}
+		return pagoRetorno;
 	}
 
 }

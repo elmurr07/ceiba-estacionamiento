@@ -48,7 +48,7 @@ public class ServiciosDelVigilateImpl implements ServiciosDelVigilante {
 	@Override
 	public PagoDto registrarSalida(long idRegistro) {
 		RegistroEntity registroEntity = registro.registrarSalidaVehiculo(idRegistro);
-		double costoCalculado = vehiculoStrategy.ejecutarCalculo(registroEntity);
+		Double costoCalculado = vehiculoStrategy.ejecutarCalculo(registroEntity);
 		return pago.registrarPago(registroEntity, costoCalculado);
 	}
 

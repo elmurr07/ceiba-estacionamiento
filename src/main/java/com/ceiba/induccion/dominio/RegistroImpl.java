@@ -40,8 +40,11 @@ public class RegistroImpl implements Registro {
 	@Override
 	public RegistroEntity registrarSalidaVehiculo(long idRegistro) {
 		RegistroEntity registroEntity = consultarRegistro(idRegistro);
-		registroEntity.setFin(new Date());
-		return registroRepositorio.save(registroEntity);
+		if (registroEntity != null) {
+			registroEntity.setFin(new Date());
+			registroEntity = registroRepositorio.save(registroEntity);
+		}
+		return registroEntity;
 	}
 
 	@Override

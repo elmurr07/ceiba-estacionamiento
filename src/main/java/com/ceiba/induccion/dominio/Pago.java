@@ -5,6 +5,6 @@ import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
 
 public interface Pago {
 
-	PagoDto registrarPago(RegistroEntity registroEntity, double valor);
+	PagoDto registrarPago(RegistroEntity registroEntity, Double valor);
 
 }

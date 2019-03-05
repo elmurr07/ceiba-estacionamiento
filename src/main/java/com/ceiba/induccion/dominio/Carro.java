@@ -11,6 +11,7 @@ public class Carro implements Vehiculo {
 
 	private static final double VALOR_HORA = 1_000;
 	private static final double VALOR_DIA = 8_000;
+	private static final long HORAS_MINIMO_COBRO = 1;
 	private static final long HORAS_PARQUEADERO_DIA = 8;
 	private static final long HORAS_DIA = 24;
 
@@ -24,7 +25,9 @@ public class Carro implements Vehiculo {
 
 		costo = diasParqueo * VALOR_DIA;
 
-		if (horasParqueo <= HORAS_PARQUEADERO_DIA) {
+		if (horasParqueo < HORAS_MINIMO_COBRO && costo == 0) {
+			costo = VALOR_HORA;
+		} else if (horasParqueo <= HORAS_PARQUEADERO_DIA) {
 			costo += totalHoras * VALOR_HORA;
 		} else {
 			costo += VALOR_DIA;

@@ -28,8 +28,8 @@ public class RegistroController {
 	private Registro registro;
 
 	@PostMapping("registrarIngreso")
-	public void registrarIngreso(@RequestBody VehiculoDto vehiculoDto) {
-		serviciosDelVigilante.registrarIngreso(vehiculoDto);
+	public RegistroDto registrarIngreso(@RequestBody VehiculoDto vehiculoDto) {
+		return serviciosDelVigilante.registrarIngreso(vehiculoDto);
 	}
 
 	@PostMapping("registrarSalida")
