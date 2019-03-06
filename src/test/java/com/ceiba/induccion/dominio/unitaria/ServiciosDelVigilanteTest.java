@@ -20,13 +20,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ceiba.induccion.builder.RegistroTestBuilder;
 import com.ceiba.induccion.builder.VehiculoTestBuilder;
 import com.ceiba.induccion.dominio.CalendarioVigilante;
-import com.ceiba.induccion.dominio.Registro;
-import com.ceiba.induccion.dominio.ServiciosDelVigilateImpl;
-import com.ceiba.induccion.dominio.CalculadorStrategy;
+import com.ceiba.induccion.dominio.LibretaVigilante;
+import com.ceiba.induccion.dominio.ReglasEstacionamiento;
+import com.ceiba.induccion.dominio.ReglasEstacionamientoCarro;
+import com.ceiba.induccion.dominio.ReglasEstacionamientoMoto;
+import com.ceiba.induccion.dominio.ServiciosDelVigilanteImpl;
 import com.ceiba.induccion.dominio.dto.RegistroDto;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
 import com.ceiba.induccion.dominio.excepcion.RegistroException;
-import com.ceiba.induccion.utilidad.RegistroConstants;
 import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 
 @RunWith(SpringRunner.class)
@@ -44,13 +45,13 @@ public class ServiciosDelVigilanteTest {
 	private CalendarioVigilante calendarioVigilante;
 
 	@Mock
-	private CalculadorStrategy calculadorStrategy;
+	private ReglasEstacionamiento reglasEstacionamiento;
 
 	@Mock
-	private Registro registro;
+	private LibretaVigilante libretaVigilante;
 
 	@InjectMocks
-	private ServiciosDelVigilateImpl serviciosDelVigilante;
+	private ServiciosDelVigilanteImpl serviciosDelVigilante;
 
 	@Before
 	public void setUp() {
@@ -63,12 +64,12 @@ public class ServiciosDelVigilanteTest {
 		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION)
 				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
 
-		when(registro.contarVehiculosEstacionados(TipoVehiculoEnum.MOTO)).thenReturn(MOTOS_EN_PARQUEADERO);
+		when(libretaVigilante.contarVehiculosEstacionados(TipoVehiculoEnum.MOTO)).thenReturn(MOTOS_EN_PARQUEADERO);
 
-		when(calculadorStrategy.validarCupo(TipoVehiculoEnum.MOTO, MOTOS_EN_PARQUEADERO)).thenReturn(Boolean.TRUE);
+		when(reglasEstacionamiento.validarCupo(TipoVehiculoEnum.MOTO, MOTOS_EN_PARQUEADERO)).thenReturn(Boolean.TRUE);
 
 		RegistroDto registroDto = RegistroTestBuilder.defaultValues().conVehiculoDto(vehiculoDto).buildDto();
-		when(registro.registrarIngresoVehiculo(any())).thenReturn(registroDto);
+		when(libretaVigilante.registrarIngresoVehiculo(any())).thenReturn(registroDto);
 
 		// act
 		RegistroDto registroAlmacenado = serviciosDelVigilante.registrarIngreso(vehiculoDto);
@@ -85,12 +86,12 @@ public class ServiciosDelVigilanteTest {
 		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION)
 				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
 
-		when(registro.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO)).thenReturn(CARROS_EN_PARQUEADERO);
+		when(libretaVigilante.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO)).thenReturn(CARROS_EN_PARQUEADERO);
 
-		when(calculadorStrategy.validarCupo(TipoVehiculoEnum.CARRO, CARROS_EN_PARQUEADERO)).thenReturn(Boolean.TRUE);
+		when(reglasEstacionamiento.validarCupo(TipoVehiculoEnum.CARRO, CARROS_EN_PARQUEADERO)).thenReturn(Boolean.TRUE);
 
 		RegistroDto registroDto = RegistroTestBuilder.defaultValues().conVehiculoDto(vehiculoDto).buildDto();
-		when(registro.registrarIngresoVehiculo(any())).thenReturn(registroDto);
+		when(libretaVigilante.registrarIngresoVehiculo(any())).thenReturn(registroDto);
 
 		// act
 		RegistroDto registroAlmacenado = serviciosDelVigilante.registrarIngreso(vehiculoDto);
@@ -106,17 +107,17 @@ public class ServiciosDelVigilanteTest {
 		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION)
 				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
 
-		when(registro.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO))
-				.thenReturn(RegistroConstants.CUPO_MOTOS_PARQUEADERO);
+		when(libretaVigilante.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO))
+				.thenReturn(ReglasEstacionamientoMoto.CUPO_MOTOS_PARQUEADERO);
 
-		when(calculadorStrategy.validarCupo(TipoVehiculoEnum.MOTO, RegistroConstants.CUPO_MOTOS_PARQUEADERO))
+		when(reglasEstacionamiento.validarCupo(TipoVehiculoEnum.MOTO, ReglasEstacionamientoMoto.CUPO_MOTOS_PARQUEADERO))
 				.thenReturn(Boolean.FALSE);
 
 		// act
 		try {
 			serviciosDelVigilante.registrarIngreso(vehiculoDto);
 		} catch (RegistroException e) {
-			Assert.assertEquals(RegistroConstants.MENSAJE_ERROR_NO_HAY_CUPO, e.getMessage());
+			Assert.assertEquals(ServiciosDelVigilanteImpl.MENSAJE_ERROR_NO_HAY_CUPO, e.getMessage());
 			return;
 		}
 
@@ -130,17 +131,17 @@ public class ServiciosDelVigilanteTest {
 		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION)
 				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
 
-		when(registro.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO))
-				.thenReturn(RegistroConstants.CUPO_CARROS_PARQUEADERO);
+		when(libretaVigilante.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO))
+				.thenReturn(ReglasEstacionamientoCarro.CUPO_CARROS_PARQUEADERO);
 
-		when(calculadorStrategy.validarCupo(TipoVehiculoEnum.CARRO, RegistroConstants.CUPO_CARROS_PARQUEADERO))
+		when(reglasEstacionamiento.validarCupo(TipoVehiculoEnum.CARRO, ReglasEstacionamientoCarro.CUPO_CARROS_PARQUEADERO))
 				.thenReturn(Boolean.FALSE);
 
 		// act
 		try {
 			serviciosDelVigilante.registrarIngreso(vehiculoDto);
 		} catch (RegistroException e) {
-			Assert.assertEquals(RegistroConstants.MENSAJE_ERROR_NO_HAY_CUPO, e.getMessage());
+			Assert.assertEquals(ServiciosDelVigilanteImpl.MENSAJE_ERROR_NO_HAY_CUPO, e.getMessage());
 			return;
 		}
 
@@ -160,7 +161,7 @@ public class ServiciosDelVigilanteTest {
 		try {
 			serviciosDelVigilante.registrarIngreso(vehiculoDto);
 		} catch (RegistroException e) {
-			Assert.assertEquals(RegistroConstants.MENSAJE_ERROR_NO_INGRESO_FIN_SEMANA, e.getMessage());
+			Assert.assertEquals(ServiciosDelVigilanteImpl.MENSAJE_ERROR_NO_INGRESO_FIN_SEMANA, e.getMessage());
 			return;
 		}
 		

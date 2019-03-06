@@ -15,38 +15,39 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ceiba.induccion.builder.RegistroTestBuilder;
 import com.ceiba.induccion.builder.VehiculoTestBuilder;
-import com.ceiba.induccion.dominio.CalculadorCarro;
+import com.ceiba.induccion.dominio.ReglasEstacionamientoMoto;
 import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
 import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
-import com.ceiba.induccion.utilidad.RegistroConstants;
 import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CalculadorCarroTest {
+public class ReglasEstacionamientoMotoTest {
 
 	@InjectMocks
-	private CalculadorCarro calculadorCarro;
+	private ReglasEstacionamientoMoto reglasEstacionamientoMoto;
 
-	private static final String PLACA_CARRO = "LGH156";
+	private static final String PLACA_MOTO = "LGH156";
+	private static final int CILINDRAJE_MOTO_ALTO = 650;
+	private static final int CILINDRAJE_MOTO_BAJO = 200;
 	private static final String FECHA_INICIO_VEHICULO_1 = "20/02/2019 16:00";
-	private static final String FECHA_FIN_VEHICULO_1 = "21/02/2019 19:00";
+	private static final String FECHA_FIN_VEHICULO_1 = "21/02/2019 02:00";
 	private static final String FECHA_INICIO_VEHICULO_2 = "14/03/2019 07:00";
 	private static final String FECHA_FIN_VEHICULO_2 = "14/03/2019 16:00";
 	private static final String FECHA_INICIO_VEHICULO_3 = "15/01/2019 10:00";
 	private static final String FECHA_FIN_VEHICULO_3 = "15/01/2019 10:30";
-	private static final double COSTO_VEHICULO_1 = 11_000;
-	private static final double COSTO_VEHICULO_2 = 8_000;
-	private static final double COSTO_VEHICULO_3 = 1_000;
-	private static final int CARROS_EN_PARQUEADERO_PARCIAL = 12;
+	private static final double COSTO_VEHICULO_1 = 6_000;
+	private static final double COSTO_VEHICULO_2 = 4_000;
+	private static final double COSTO_VEHICULO_3 = 500;
+	private static final int MOTOS_EN_PARQUEADERO_PARCIAL = 7;
 
 	private SimpleDateFormat formatoFechaHora = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
 	@Test
-	public void costoEstacionamiento1Dia3HorasTest() {
+	public void costoEstacionamiento10HorasCilindrajeAltoTest() {
 		// arrange
 		VehiculoEntity vehiculoEntity = VehiculoTestBuilder.defaultValues().conTipo(TipoVehiculoEnum.CARRO)
-				.conPlaca(PLACA_CARRO).build();
+				.conPlaca(PLACA_MOTO).conCilindraje(CILINDRAJE_MOTO_ALTO).build();
 		Date fechaInicio = null;
 		Date fechaFin = null;
 		try {
@@ -59,17 +60,17 @@ public class CalculadorCarroTest {
 				.conInicio(fechaInicio).conFin(fechaFin).build();
 
 		// act
-		double costo = calculadorCarro.calcularCosto(registroEntity);
+		double costo = reglasEstacionamientoMoto.calcularCosto(registroEntity);
 
 		// assert
 		Assert.assertEquals(COSTO_VEHICULO_1, costo, 0);
 	}
 
 	@Test
-	public void costoEstacionamiento9HorasTest() {
+	public void costoEstacionamiento9HorasCilindrajeBajoTest() {
 		// arrange
 		VehiculoEntity vehiculoEntity = VehiculoTestBuilder.defaultValues().conTipo(TipoVehiculoEnum.CARRO)
-				.conPlaca(PLACA_CARRO).build();
+				.conPlaca(PLACA_MOTO).conCilindraje(CILINDRAJE_MOTO_BAJO).build();
 		Date fechaInicio = null;
 		Date fechaFin = null;
 		try {
@@ -82,17 +83,17 @@ public class CalculadorCarroTest {
 				.conInicio(fechaInicio).conFin(fechaFin).build();
 
 		// act
-		double costo = calculadorCarro.calcularCosto(registroEntity);
+		double costo = reglasEstacionamientoMoto.calcularCosto(registroEntity);
 
 		// assert
 		Assert.assertEquals(COSTO_VEHICULO_2, costo, 0);
 	}
 
 	@Test
-	public void costoEstacionamiento30MinutosTest() {
+	public void costoEstacionamiento30MinutosCilindrajeBajoTest() {
 		// arrange
 		VehiculoEntity vehiculoEntity = VehiculoTestBuilder.defaultValues().conTipo(TipoVehiculoEnum.CARRO)
-				.conPlaca(PLACA_CARRO).build();
+				.conPlaca(PLACA_MOTO).conCilindraje(CILINDRAJE_MOTO_BAJO).build();
 		Date fechaInicio = null;
 		Date fechaFin = null;
 		try {
@@ -105,7 +106,7 @@ public class CalculadorCarroTest {
 				.conInicio(fechaInicio).conFin(fechaFin).build();
 
 		// act
-		double costo = calculadorCarro.calcularCosto(registroEntity);
+		double costo = reglasEstacionamientoMoto.calcularCosto(registroEntity);
 
 		// assert
 		Assert.assertEquals(COSTO_VEHICULO_3, costo, 0);
@@ -116,7 +117,7 @@ public class CalculadorCarroTest {
 		// arrange
 
 		// act
-		boolean resultado = calculadorCarro.existeCupo(CARROS_EN_PARQUEADERO_PARCIAL);
+		boolean resultado = reglasEstacionamientoMoto.existeCupo(MOTOS_EN_PARQUEADERO_PARCIAL);
 
 		// assert
 		Assert.assertTrue(resultado);
@@ -127,7 +128,7 @@ public class CalculadorCarroTest {
 		// arrange
 
 		// act
-		boolean resultado = calculadorCarro.existeCupo(RegistroConstants.CUPO_CARROS_PARQUEADERO);
+		boolean resultado = reglasEstacionamientoMoto.existeCupo(ReglasEstacionamientoMoto.CUPO_MOTOS_PARQUEADERO);
 
 		// assert
 		Assert.assertFalse(resultado);

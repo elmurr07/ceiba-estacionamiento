@@ -8,13 +8,15 @@ import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
 import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 
 @Component
-public class CalculadorStrategy {
+public class ReglasEstacionamiento {
 
+	public static final char LETRA_RESTRICCION_ACCESO = 'A';
+	
 	@Resource(name = "carro")
-	private Calculador carro;
+	private ReglasEstacionamientoVehiculo carro;
 
 	@Resource(name = "moto")
-	private Calculador moto;
+	private ReglasEstacionamientoVehiculo moto;
 
 	public boolean validarCupo(TipoVehiculoEnum tipo, int numeroVehiculos) {
 		boolean existeCupo;

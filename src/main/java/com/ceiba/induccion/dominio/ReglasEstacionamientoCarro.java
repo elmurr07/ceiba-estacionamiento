@@ -4,11 +4,11 @@ import org.springframework.stereotype.Component;
 
 import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
 import com.ceiba.induccion.utilidad.CalendarUtil;
-import com.ceiba.induccion.utilidad.RegistroConstants;
 
 @Component("carro")
-public class CalculadorCarro implements Calculador {
+public class ReglasEstacionamientoCarro implements ReglasEstacionamientoVehiculo {
 
+	public static final int CUPO_CARROS_PARQUEADERO = 20;
 	public static final double VALOR_HORA = 1_000;
 	public static final double VALOR_DIA = 8_000;
 	private static final long HORAS_MINIMO_COBRO = 1;
@@ -38,7 +38,7 @@ public class CalculadorCarro implements Calculador {
 
 	@Override
 	public boolean existeCupo(int numero) {
-		return numero < RegistroConstants.CUPO_CARROS_PARQUEADERO;
+		return numero < CUPO_CARROS_PARQUEADERO;
 	}
 
 }

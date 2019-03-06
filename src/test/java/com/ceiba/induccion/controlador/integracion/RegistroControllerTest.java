@@ -15,8 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ceiba.induccion.builder.VehiculoTestBuilder;
 import com.ceiba.induccion.controlador.RegistroController;
-import com.ceiba.induccion.dominio.CalculadorCarro;
-import com.ceiba.induccion.dominio.CalculadorMoto;
+import com.ceiba.induccion.dominio.ReglasEstacionamientoCarro;
+import com.ceiba.induccion.dominio.ReglasEstacionamientoMoto;
 import com.ceiba.induccion.dominio.dto.PagoDto;
 import com.ceiba.induccion.dominio.dto.RegistroDto;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
@@ -74,7 +74,7 @@ public class RegistroControllerTest {
 		PagoDto pagoDto = registroController.registrarSalida(registroDto);
 
 		// assert
-		Assert.assertEquals(CalculadorMoto.VALOR_HORA, pagoDto.getValor(), 0);
+		Assert.assertEquals(ReglasEstacionamientoMoto.VALOR_HORA, pagoDto.getValor(), 0);
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class RegistroControllerTest {
 		PagoDto pagoDto = registroController.registrarSalida(registroDto);
 
 		// assert
-		Assert.assertEquals(CalculadorCarro.VALOR_HORA, pagoDto.getValor(), 0);
+		Assert.assertEquals(ReglasEstacionamientoCarro.VALOR_HORA, pagoDto.getValor(), 0);
 	}
 
 	@Test

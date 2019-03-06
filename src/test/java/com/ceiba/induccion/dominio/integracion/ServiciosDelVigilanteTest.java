@@ -13,9 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ceiba.induccion.builder.VehiculoTestBuilder;
 import com.ceiba.induccion.dominio.ServiciosDelVigilante;
+import com.ceiba.induccion.dominio.ServiciosDelVigilanteImpl;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
 import com.ceiba.induccion.dominio.excepcion.RegistroException;
-import com.ceiba.induccion.utilidad.RegistroConstants;
 import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 
 @RunWith(SpringRunner.class)
@@ -40,7 +40,7 @@ public class ServiciosDelVigilanteTest {
 			serviciosDelVigilante.registrarIngreso(vehiculoDto);
 			serviciosDelVigilante.registrarIngreso(vehiculoDto);
 		} catch (RegistroException e) {
-			Assert.assertEquals(RegistroConstants.MENSAJE_ERROR_VEHICULO_ESTACIONADO, e.getMessage());
+			Assert.assertEquals(ServiciosDelVigilanteImpl.MENSAJE_ERROR_VEHICULO_ESTACIONADO, e.getMessage());
 			return;
 		}
 

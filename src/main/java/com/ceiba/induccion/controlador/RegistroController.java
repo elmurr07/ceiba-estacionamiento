@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ceiba.induccion.dominio.Registro;
+import com.ceiba.induccion.dominio.LibretaVigilante;
 import com.ceiba.induccion.dominio.ServiciosDelVigilante;
 import com.ceiba.induccion.dominio.dto.PagoDto;
 import com.ceiba.induccion.dominio.dto.RegistroDto;
@@ -25,7 +25,7 @@ public class RegistroController {
 	private ServiciosDelVigilante serviciosDelVigilante;
 
 	@Autowired
-	private Registro registro;
+	private LibretaVigilante libretaVigilante;
 
 	@PostMapping("registrarIngreso")
 	public RegistroDto registrarIngreso(@RequestBody VehiculoDto vehiculoDto) {
@@ -39,7 +39,7 @@ public class RegistroController {
 
 	@GetMapping("listar")
 	public List<RegistroDto> listar() {
-		return registro.listarEstacionados();
+		return libretaVigilante.listarVehiculosEstacionados();
 	}
 
 }

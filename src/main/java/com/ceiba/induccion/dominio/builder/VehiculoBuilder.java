@@ -4,9 +4,11 @@ import java.util.Date;
 
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
 import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
-import com.ceiba.induccion.utilidad.UsuarioConstants;
 
 public class VehiculoBuilder {
+	
+	public static final String USUARIO_SISTEMA = "usuario_prueba";
+	
 	private VehiculoBuilder() {
 		throw new IllegalStateException("Clase Builder");
 	}
@@ -26,7 +28,7 @@ public class VehiculoBuilder {
 
 		if (vehiculoDto != null) {
 			vehiculoEntity = new VehiculoEntity(vehiculoDto.getPlaca(), vehiculoDto.getTipo(),
-					vehiculoDto.getCilindraje(), UsuarioConstants.USUARIO_SISTEMA, new Date());
+					vehiculoDto.getCilindraje(), USUARIO_SISTEMA, new Date());
 		}
 
 		return vehiculoEntity;

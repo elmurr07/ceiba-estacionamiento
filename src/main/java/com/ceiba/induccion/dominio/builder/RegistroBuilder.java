@@ -6,10 +6,11 @@ import com.ceiba.induccion.dominio.dto.RegistroDto;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
 import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
 import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
-import com.ceiba.induccion.utilidad.UsuarioConstants;
 
 public class RegistroBuilder {
 
+	public static final String USUARIO_SISTEMA = "usuario_prueba";
+	
 	private RegistroBuilder() {
 		throw new IllegalStateException("Clase Builder");
 	}
@@ -27,7 +28,7 @@ public class RegistroBuilder {
 	public static RegistroEntity toEntity(VehiculoEntity vehiculoEntity) {
 		RegistroEntity registroEntity = null;
 
-		registroEntity = new RegistroEntity(vehiculoEntity, new Date(), null, UsuarioConstants.USUARIO_SISTEMA,
+		registroEntity = new RegistroEntity(vehiculoEntity, new Date(), null, USUARIO_SISTEMA,
 				new Date());
 
 		return registroEntity;
