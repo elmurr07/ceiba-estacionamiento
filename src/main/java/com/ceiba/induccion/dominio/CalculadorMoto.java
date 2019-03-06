@@ -6,14 +6,16 @@ import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
 import com.ceiba.induccion.utilidad.CalendarUtil;
 import com.ceiba.induccion.utilidad.RegistroConstants;
 
-@Component("carro")
-public class Carro implements Vehiculo {
+@Component("moto")
+public class CalculadorMoto implements Calculador {
 
-	private static final double VALOR_HORA = 1_000;
-	private static final double VALOR_DIA = 8_000;
+	public static final double VALOR_HORA = 500;
+	public static final double VALOR_DIA = 4_000;
+	private static final double VALOR_ADICIONAL_CILINDRAJE = 2_000;
 	private static final long HORAS_MINIMO_COBRO = 1;
 	private static final long HORAS_PARQUEADERO_DIA = 8;
 	private static final long HORAS_DIA = 24;
+	private static final long CILINDRAJE_COBRO_ADICIONAL = 500;
 
 	@Override
 	public double calcularCosto(RegistroEntity registroEntity) {
@@ -25,12 +27,16 @@ public class Carro implements Vehiculo {
 
 		costo = diasParqueo * VALOR_DIA;
 
-		if (horasParqueo < HORAS_MINIMO_COBRO && costo == 0) {
+		if (horasParqueo < HORAS_MINIMO_COBRO) {
 			costo = VALOR_HORA;
 		} else if (horasParqueo <= HORAS_PARQUEADERO_DIA) {
-			costo += totalHoras * VALOR_HORA;
+			costo += horasParqueo * VALOR_HORA;
 		} else {
 			costo += VALOR_DIA;
+		}
+
+		if (registroEntity.getVehiculo().getCilindraje() > CILINDRAJE_COBRO_ADICIONAL) {
+			costo += VALOR_ADICIONAL_CILINDRAJE;
 		}
 
 		return costo;
@@ -38,7 +44,7 @@ public class Carro implements Vehiculo {
 
 	@Override
 	public boolean existeCupo(int numero) {
-		return numero < RegistroConstants.CUPO_CARROS_PARQUEADERO;
+		return numero < RegistroConstants.CUPO_MOTOS_PARQUEADERO;
 	}
 
 }

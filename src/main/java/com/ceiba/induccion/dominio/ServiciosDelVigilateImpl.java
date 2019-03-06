@@ -29,7 +29,7 @@ public class ServiciosDelVigilateImpl implements ServiciosDelVigilante {
 	private Pago pago;
 
 	@Autowired
-	private VehiculoStrategy vehiculoStrategy;
+	private CalculadorStrategy calculadorStrategy;
 
 	@Override
 	public RegistroDto registrarIngreso(VehiculoDto vehiculoDto) {
@@ -38,8 +38,12 @@ public class ServiciosDelVigilateImpl implements ServiciosDelVigilante {
 		}
 
 		int numeroVehiculos = registro.contarVehiculosEstacionados(vehiculoDto.getTipo());
-		if (!vehiculoStrategy.validarCupo(vehiculoDto.getTipo(), numeroVehiculos)) {
+		if (!calculadorStrategy.validarCupo(vehiculoDto.getTipo(), numeroVehiculos)) {
 			throw new RegistroException(RegistroConstants.MENSAJE_ERROR_NO_HAY_CUPO);
+		}
+
+		if (registro.vehiculoEstacionado(vehiculoDto.getPlaca())) {
+			throw new RegistroException(RegistroConstants.MENSAJE_ERROR_VEHICULO_ESTACIONADO);
 		}
 
 		return registro.registrarIngresoVehiculo(vehiculoDto);
@@ -48,7 +52,7 @@ public class ServiciosDelVigilateImpl implements ServiciosDelVigilante {
 	@Override
 	public PagoDto registrarSalida(long idRegistro) {
 		RegistroEntity registroEntity = registro.registrarSalidaVehiculo(idRegistro);
-		Double costoCalculado = vehiculoStrategy.ejecutarCalculo(registroEntity);
+		Double costoCalculado = calculadorStrategy.ejecutarCalculo(registroEntity);
 		return pago.registrarPago(registroEntity, costoCalculado);
 	}
 

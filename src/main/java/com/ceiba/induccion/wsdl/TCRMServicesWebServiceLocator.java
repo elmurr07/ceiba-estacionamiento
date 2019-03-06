@@ -61,7 +61,8 @@ public class TCRMServicesWebServiceLocator extends org.apache.axis.client.Servic
 	 * For the given interface, get the stub implementation. If this service has no
 	 * port for the given interface, then ServiceException is thrown.
 	 */
-	public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
+	public java.rmi.Remote getPort(@SuppressWarnings("rawtypes") Class serviceEndpointInterface)
+			throws javax.xml.rpc.ServiceException {
 		try {
 			if (TCRMServicesInterface.class.isAssignableFrom(serviceEndpointInterface)) {
 				TCRMServicesWebServiceSoapBindingStub xstub = new TCRMServicesWebServiceSoapBindingStub(
@@ -80,8 +81,8 @@ public class TCRMServicesWebServiceLocator extends org.apache.axis.client.Servic
 	 * For the given interface, get the stub implementation. If this service has no
 	 * port for the given interface, then ServiceException is thrown.
 	 */
-	public java.rmi.Remote getPort(javax.xml.namespace.QName portName, Class serviceEndpointInterface)
-			throws javax.xml.rpc.ServiceException {
+	public java.rmi.Remote getPort(javax.xml.namespace.QName portName,
+			@SuppressWarnings("rawtypes") Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
 		if (portName == null) {
 			return getPort(serviceEndpointInterface);
 		}
@@ -99,18 +100,6 @@ public class TCRMServicesWebServiceLocator extends org.apache.axis.client.Servic
 		return new javax.xml.namespace.QName(
 				"http://action.trm.services.generic.action.superfinanciera.nexura.sc.com.co/",
 				"TCRMServicesWebService");
-	}
-
-	private java.util.HashSet<javax.xml.namespace.QName> ports = null;
-
-	public java.util.Iterator<javax.xml.namespace.QName> getPorts() {
-		if (ports == null) {
-			ports = new java.util.HashSet<>();
-			ports.add(new javax.xml.namespace.QName(
-					"http://action.trm.services.generic.action.superfinanciera.nexura.sc.com.co/",
-					TCRM_SERVICE_PORT));
-		}
-		return ports.iterator();
 	}
 
 	/**

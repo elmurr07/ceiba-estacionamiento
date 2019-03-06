@@ -19,4 +19,6 @@ public interface Registro {
 
 	List<RegistroDto> listarEstacionados();
 
+	boolean vehiculoEstacionado(String placa);
+
 }

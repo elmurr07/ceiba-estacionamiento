@@ -15,14 +15,7 @@ public class TcrmResponse extends Tcrm implements java.io.Serializable {
 	private java.lang.Boolean success;
 
 	public TcrmResponse() {
-	}
-
-	public TcrmResponse(java.lang.Boolean displayToUser, java.lang.Long id, java.lang.String unit,
-			java.util.Calendar validityFrom, java.util.Calendar validityTo, java.lang.Float value,
-			java.lang.String message, java.lang.Boolean success) {
-		super(displayToUser, id, unit, validityFrom, validityTo, value);
-		this.message = message;
-		this.success = success;
+		// constructor vacio
 	}
 
 	/**
@@ -59,53 +52,6 @@ public class TcrmResponse extends Tcrm implements java.io.Serializable {
 	 */
 	public void setSuccess(java.lang.Boolean success) {
 		this.success = success;
-	}
-
-	private java.lang.Object xequalsCalc = null;
-
-	@Override
-	public synchronized boolean equals(java.lang.Object obj) {
-		if (obj == null)
-			return false;
-
-		if (!(obj instanceof TcrmResponse))
-			return false;
-
-		TcrmResponse other = (TcrmResponse) obj;
-
-		if (this == obj)
-			return true;
-		if (xequalsCalc != null) {
-			return (xequalsCalc == obj);
-		}
-		xequalsCalc = obj;
-		boolean equals;
-		equals = super.equals(obj)
-				&& ((this.message == null && other.getMessage() == null)
-						|| (this.message != null && this.message.equals(other.getMessage())))
-				&& ((this.success == null && other.getSuccess() == null)
-						|| (this.success != null && this.success.equals(other.getSuccess())));
-		xequalsCalc = null;
-		return equals;
-	}
-
-	private boolean xhashCodeCalc = false;
-
-	@Override
-	public synchronized int hashCode() {
-		if (xhashCodeCalc) {
-			return 0;
-		}
-		xhashCodeCalc = true;
-		int xhashCode = super.hashCode();
-		if (getMessage() != null) {
-			xhashCode += getMessage().hashCode();
-		}
-		if (getSuccess() != null) {
-			xhashCode += getSuccess().hashCode();
-		}
-		xhashCodeCalc = false;
-		return xhashCode;
 	}
 
 	private static org.apache.axis.description.TypeDesc typeDesc = new org.apache.axis.description.TypeDesc(

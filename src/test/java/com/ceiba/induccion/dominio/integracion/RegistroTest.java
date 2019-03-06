@@ -1,9 +1,5 @@
 package com.ceiba.induccion.dominio.integracion;
 
-import static org.junit.Assert.fail;
-
-import java.util.List;
-
 import javax.transaction.Transactional;
 
 import org.junit.Assert;
@@ -16,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.ceiba.induccion.builder.VehiculoTestBuilder;
 import com.ceiba.induccion.dominio.Registro;
 import com.ceiba.induccion.dominio.ServiciosDelVigilante;
-import com.ceiba.induccion.dominio.dto.RegistroDto;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
 import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
 
@@ -27,62 +22,49 @@ public class RegistroTest {
 
 	private static final String PLACA_VEHICULO_SIN_RESTRICCION_1 = "FFH134";
 	private static final String PLACA_VEHICULO_SIN_RESTRICCION_2 = "FFH146";
-	private static final String PLACA_VEHICULO_SIN_RESTRICCION_3 = "RLB741";
 	private static final Integer CILINDRAJE_MOTO = 550;
-	private static final int NUMERO_VEHICULOS_ESTACIONADOS = 3;
+	private static final int TOTAL_CARROS_ESTACIONADOS = 2;
+	private static final int TOTAL_MOTOS_ESTACIONADAS = 2;
 
 	@Autowired
 	private Registro registro;
 
 	@Autowired
 	private ServiciosDelVigilante serviciosDelVigilante;
-
+	
 	@Test
-	public void numeroCorrectolistarEstacionadosTest() {
+	public void contarCarrosEstacionadosTest() {
 		// arrange
 		VehiculoDto vehiculoDto1 = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_1)
 				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
 		VehiculoDto vehiculoDto2 = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_2)
 				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
-		VehiculoDto vehiculoDto3 = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_3)
-				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
-
 		// act
 		serviciosDelVigilante.registrarIngreso(vehiculoDto1);
 		serviciosDelVigilante.registrarIngreso(vehiculoDto2);
-		serviciosDelVigilante.registrarIngreso(vehiculoDto3);
 
-		List<RegistroDto> listado = registro.listarEstacionados();
+		int conteo = registro.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO);
 
 		// assert
-		Assert.assertEquals(NUMERO_VEHICULOS_ESTACIONADOS, listado.size());
+		Assert.assertEquals(TOTAL_CARROS_ESTACIONADOS, conteo);
 	}
 
 	@Test
-	public void listarEstacionadosFechaFinNulaTest() {
+	public void contarMotosEstacionadasTest() {
 		// arrange
 		VehiculoDto vehiculoDto1 = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_1)
-				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
+				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
 		VehiculoDto vehiculoDto2 = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_2)
-				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
-		VehiculoDto vehiculoDto3 = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION_3)
 				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
 
 		// act
 		serviciosDelVigilante.registrarIngreso(vehiculoDto1);
 		serviciosDelVigilante.registrarIngreso(vehiculoDto2);
-		serviciosDelVigilante.registrarIngreso(vehiculoDto3);
 
-		List<RegistroDto> listado = registro.listarEstacionados();
-
-		for (RegistroDto registroDto : listado) {
-			if (registroDto.getFin() != null) {
-				fail();
-			}
-		}
+		int conteo = registro.contarVehiculosEstacionados(TipoVehiculoEnum.MOTO);
 
 		// assert
-		assert (true);
+		Assert.assertEquals(TOTAL_MOTOS_ESTACIONADAS, conteo);
 	}
 
 }

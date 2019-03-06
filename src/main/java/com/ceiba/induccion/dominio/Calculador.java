@@ -2,7 +2,7 @@ package com.ceiba.induccion.dominio;
 
 import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
 
-public interface Vehiculo {
+public interface Calculador {
 
 	double calcularCosto(RegistroEntity registroEntity);
 

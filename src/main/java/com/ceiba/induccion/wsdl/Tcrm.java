@@ -23,17 +23,7 @@ public class Tcrm implements java.io.Serializable {
 	private java.lang.Float value;
 
 	public Tcrm() {
-
-	}
-
-	public Tcrm(java.lang.Boolean displayToUser, java.lang.Long id, java.lang.String unit,
-			java.util.Calendar validityFrom, java.util.Calendar validityTo, java.lang.Float value) {
-		this.displayToUser = displayToUser;
-		this.id = id;
-		this.unit = unit;
-		this.validityFrom = validityFrom;
-		this.validityTo = validityTo;
-		this.value = value;
+		// constructor vacio
 	}
 
 	/**
@@ -142,69 +132,6 @@ public class Tcrm implements java.io.Serializable {
 	 */
 	public void setValue(java.lang.Float value) {
 		this.value = value;
-	}
-
-	private java.lang.Object xequalsCalc = null;
-
-	public synchronized boolean equals(java.lang.Object obj) {
-		if (obj == null)
-			return false;
-
-		if (!(obj instanceof Tcrm))
-			return false;
-
-		Tcrm other = (Tcrm) obj;
-
-		if (this == obj)
-			return true;
-		if (xequalsCalc != null) {
-			return (xequalsCalc == obj);
-		}
-		xequalsCalc = obj;
-		boolean xequals;
-		xequals = ((this.displayToUser == null && other.getDisplayToUser() == null)
-				|| (this.displayToUser != null && this.displayToUser.equals(other.getDisplayToUser())))
-				&& ((this.id == null && other.getId() == null) || (this.id != null && this.id.equals(other.getId())))
-				&& ((this.unit == null && other.getUnit() == null)
-						|| (this.unit != null && this.unit.equals(other.getUnit())))
-				&& ((this.validityFrom == null && other.getValidityFrom() == null)
-						|| (this.validityFrom != null && this.validityFrom.equals(other.getValidityFrom())))
-				&& ((this.validityTo == null && other.getValidityTo() == null)
-						|| (this.validityTo != null && this.validityTo.equals(other.getValidityTo())))
-				&& ((this.value == null && other.getValue() == null)
-						|| (this.value != null && this.value.equals(other.getValue())));
-		xequalsCalc = null;
-		return xequals;
-	}
-
-	private boolean xhashCodeCalc = false;
-
-	public synchronized int hashCode() {
-		if (xhashCodeCalc) {
-			return 0;
-		}
-		xhashCodeCalc = true;
-		int xhashCode = 1;
-		if (getDisplayToUser() != null) {
-			xhashCode += getDisplayToUser().hashCode();
-		}
-		if (getId() != null) {
-			xhashCode += getId().hashCode();
-		}
-		if (getUnit() != null) {
-			xhashCode += getUnit().hashCode();
-		}
-		if (getValidityFrom() != null) {
-			xhashCode += getValidityFrom().hashCode();
-		}
-		if (getValidityTo() != null) {
-			xhashCode += getValidityTo().hashCode();
-		}
-		if (getValue() != null) {
-			xhashCode += getValue().hashCode();
-		}
-		xhashCodeCalc = false;
-		return xhashCode;
 	}
 
 	private static org.apache.axis.description.TypeDesc typeDesc = new org.apache.axis.description.TypeDesc(Tcrm.class,

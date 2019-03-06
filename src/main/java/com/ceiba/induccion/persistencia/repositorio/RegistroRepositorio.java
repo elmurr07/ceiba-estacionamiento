@@ -16,6 +16,9 @@ public interface RegistroRepositorio extends CrudRepository<RegistroEntity, Long
 	@Query("SELECT COUNT(r) FROM registro r WHERE r.vehiculo.tipo = :tipo AND fin is null")
 	int contarVehiculosEstacionados(@Param("tipo") TipoVehiculoEnum tipo);
 
+	@Query("SELECT COUNT(r) FROM registro r WHERE r.vehiculo.placa = :placa AND fin is null")
+	int contarVehiculoEstacionadoPlaca(@Param("placa") String placa);
+
 	List<RegistroEntity> findByFinIsNull();
 
 }

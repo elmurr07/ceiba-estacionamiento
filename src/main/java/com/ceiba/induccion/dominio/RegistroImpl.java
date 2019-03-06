@@ -71,4 +71,9 @@ public class RegistroImpl implements Registro {
 		return registrosDto;
 	}
 
+	@Override
+	public boolean vehiculoEstacionado(String placa) {
+		return registroRepositorio.contarVehiculoEstacionadoPlaca(placa) > 0;
+	}
+
 }

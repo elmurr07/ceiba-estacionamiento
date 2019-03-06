@@ -1,5 +1,9 @@
 package com.ceiba.induccion.wsdl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.namespace.QName;
 import javax.xml.rpc.ServiceException;
 
 public class TCRMServicesWebServiceSoapBindingStub extends org.apache.axis.client.Stub
@@ -7,10 +11,10 @@ public class TCRMServicesWebServiceSoapBindingStub extends org.apache.axis.clien
 
 	private static final String URL_ACTION = "http://action.trm.services.generic.action.superfinanciera.nexura.sc.com.co/";
 
-	private java.util.Vector cachedSerClasses = new java.util.Vector();
-	private java.util.Vector cachedSerQNames = new java.util.Vector();
-	private java.util.Vector cachedSerFactories = new java.util.Vector();
-	private java.util.Vector cachedDeserFactories = new java.util.Vector();
+	private List<Class<?>> cachedSerClasses = new ArrayList<>();
+	private List<QName> cachedSerQNames = new ArrayList<>();
+	private List<Class<?>> cachedSerFactories = new ArrayList<>();
+	private List<Class<?>> cachedDeserFactories = new ArrayList<>();
 
 	static org.apache.axis.description.OperationDesc[] xoperations;
 
@@ -56,10 +60,10 @@ public class TCRMServicesWebServiceSoapBindingStub extends org.apache.axis.clien
 			super.service = service;
 		}
 		((org.apache.axis.client.Service) super.service).setTypeMappingVersion("1.2");
-		java.lang.Class cls;
+		java.lang.Class<?> cls;
 		javax.xml.namespace.QName qName;
-		java.lang.Class beansf = org.apache.axis.encoding.ser.BeanSerializerFactory.class;
-		java.lang.Class beandf = org.apache.axis.encoding.ser.BeanDeserializerFactory.class;
+		java.lang.Class<?> beansf = org.apache.axis.encoding.ser.BeanSerializerFactory.class;
+		java.lang.Class<?> beandf = org.apache.axis.encoding.ser.BeanDeserializerFactory.class;
 		qName = new javax.xml.namespace.QName(URL_ACTION, "tcrm");
 		cachedSerQNames.add(qName);
 		cls = Tcrm.class;
@@ -97,7 +101,7 @@ public class TCRMServicesWebServiceSoapBindingStub extends org.apache.axis.clien
 			if (super.cachedPortName != null) {
 				xcall.setPortName(super.cachedPortName);
 			}
-			java.util.Enumeration keys = super.cachedProperties.keys();
+			java.util.Enumeration<?> keys = super.cachedProperties.keys();
 			while (keys.hasMoreElements()) {
 				java.lang.String key = (java.lang.String) keys.nextElement();
 				xcall.setProperty(key, super.cachedProperties.get(key));
@@ -112,18 +116,12 @@ public class TCRMServicesWebServiceSoapBindingStub extends org.apache.axis.clien
 					// must set encoding style before registering serializers
 					xcall.setEncodingStyle(null);
 					for (int i = 0; i < cachedSerFactories.size(); ++i) {
-						java.lang.Class cls = (java.lang.Class) cachedSerClasses.get(i);
-						javax.xml.namespace.QName qName = (javax.xml.namespace.QName) cachedSerQNames.get(i);
+						java.lang.Class<?> cls = cachedSerClasses.get(i);
+						javax.xml.namespace.QName qName = cachedSerQNames.get(i);
 						java.lang.Object x = cachedSerFactories.get(i);
 						if (x instanceof Class) {
-							java.lang.Class sf = (java.lang.Class) cachedSerFactories.get(i);
-							java.lang.Class df = (java.lang.Class) cachedDeserFactories.get(i);
-							xcall.registerTypeMapping(cls, qName, sf, df, false);
-						} else if (x instanceof javax.xml.rpc.encoding.SerializerFactory) {
-							org.apache.axis.encoding.SerializerFactory sf = (org.apache.axis.encoding.SerializerFactory) cachedSerFactories
-									.get(i);
-							org.apache.axis.encoding.DeserializerFactory df = (org.apache.axis.encoding.DeserializerFactory) cachedDeserFactories
-									.get(i);
+							java.lang.Class<?> sf = cachedSerFactories.get(i);
+							java.lang.Class<?> df = cachedDeserFactories.get(i);
 							xcall.registerTypeMapping(cls, qName, sf, df, false);
 						}
 					}
