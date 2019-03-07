@@ -10,6 +10,7 @@ jmeter {
 }
 
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'jacoco'
 
 group = 'com.ceiba.induccion'
 version = '0.0.1-SNAPSHOT'

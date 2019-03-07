@@ -9,28 +9,28 @@ import com.ceiba.induccion.utilidad.CalendarUtil;
 public class ReglasEstacionamientoCarro implements ReglasEstacionamientoVehiculo {
 
 	public static final int CUPO_CARROS_PARQUEADERO = 20;
-	public static final double VALOR_HORA = 1_000;
-	public static final double VALOR_DIA = 8_000;
-	private static final long HORAS_MINIMO_COBRO = 1;
+	public static final double VALOR_HORA_CARRO = 1_000;
+	public static final double VALOR_DIA_CARRO = 8_000;
+	private static final long HORAS_MINIMO_COBRO_CARRO = 1;
 	private static final long HORAS_PARQUEADERO_DIA = 8;
-	private static final long HORAS_DIA = 24;
+	private static final long HORAS_DIA_CARRO = 24;
 
 	@Override
 	public double calcularCosto(RegistroEntity registroEntity) {
 		double costo = 0;
 		long totalHoras = CalendarUtil.horasEntreFechas(registroEntity.getInicio(), registroEntity.getFin());
 
-		long diasParqueo = totalHoras / HORAS_DIA;
-		long horasParqueo = totalHoras % HORAS_DIA;
+		long diasParqueo = totalHoras / HORAS_DIA_CARRO;
+		long horasParqueo = totalHoras % HORAS_DIA_CARRO;
 
-		costo = diasParqueo * VALOR_DIA;
+		costo = diasParqueo * VALOR_DIA_CARRO;
 
-		if (horasParqueo < HORAS_MINIMO_COBRO) {
-			costo = VALOR_HORA;
+		if (horasParqueo < HORAS_MINIMO_COBRO_CARRO) {
+			costo = VALOR_HORA_CARRO;
 		} else if (horasParqueo <= HORAS_PARQUEADERO_DIA) {
-			costo += horasParqueo * VALOR_HORA;
+			costo += horasParqueo * VALOR_HORA_CARRO;
 		} else {
-			costo += VALOR_DIA;
+			costo += VALOR_DIA_CARRO;
 		}
 
 		return costo;

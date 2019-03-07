@@ -5,7 +5,7 @@ import java.util.Date;
 import com.ceiba.induccion.dominio.dto.VehiculoDto;
 import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
 
-public class VehiculoBuilder {
+public final class VehiculoBuilder {
 	
 	public static final String USUARIO_SISTEMA = "usuario_prueba";
 	

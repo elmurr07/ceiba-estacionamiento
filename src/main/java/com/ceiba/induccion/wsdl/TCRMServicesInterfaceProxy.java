@@ -1,7 +1,10 @@
 package com.ceiba.induccion.wsdl;
 
+import java.util.logging.Logger;
+
 public class TCRMServicesInterfaceProxy implements TCRMServicesInterface {
 
+	private static final Logger LOGGER = Logger.getLogger(TCRMServicesInterfaceProxy.class.getName());
 	private static final String XML_ADDRESS = "javax.xml.rpc.service.endpoint.address";
 	private String xendpoint = null;
 	private TCRMServicesInterface tCRMServicesInterface = null;
@@ -26,7 +29,7 @@ public class TCRMServicesInterfaceProxy implements TCRMServicesInterface {
 			}
 
 		} catch (javax.xml.rpc.ServiceException serviceException) {
-			// No implementation
+			LOGGER.log(LOGGER.getLevel(), "Error TRM", serviceException);
 		}
 	}
 

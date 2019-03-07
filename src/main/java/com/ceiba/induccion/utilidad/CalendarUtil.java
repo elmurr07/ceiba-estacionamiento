@@ -5,7 +5,7 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
-public class CalendarUtil {
+public final class CalendarUtil {
 
 	private CalendarUtil() {
 		throw new IllegalStateException("Clase de utilidad");

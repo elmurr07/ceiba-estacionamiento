@@ -9,12 +9,12 @@ import com.ceiba.induccion.utilidad.CalendarUtil;
 public class ReglasEstacionamientoMoto implements ReglasEstacionamientoVehiculo {
 
 	public static final int CUPO_MOTOS_PARQUEADERO = 10;
-	public static final double VALOR_HORA = 500;
-	public static final double VALOR_DIA = 4_000;
+	public static final double VALOR_HORA_MOTO = 500;
+	public static final double VALOR_DIA_MOTO = 4_000;
 	private static final double VALOR_ADICIONAL_CILINDRAJE = 2_000;
 	private static final long HORAS_MINIMO_COBRO = 1;
 	private static final long HORAS_PARQUEADERO_DIA = 8;
-	private static final long HORAS_DIA = 24;
+	private static final long HORAS_DIA_MOTO = 24;
 	private static final long CILINDRAJE_COBRO_ADICIONAL = 500;
 
 	@Override
@@ -22,17 +22,17 @@ public class ReglasEstacionamientoMoto implements ReglasEstacionamientoVehiculo 
 		double costo = 0;
 		long totalHoras = CalendarUtil.horasEntreFechas(registroEntity.getInicio(), registroEntity.getFin());
 
-		long diasParqueo = totalHoras / HORAS_DIA;
-		long horasParqueo = totalHoras % HORAS_DIA;
+		long diasParqueo = totalHoras / HORAS_DIA_MOTO;
+		long horasParqueo = totalHoras % HORAS_DIA_MOTO;
 
-		costo = diasParqueo * VALOR_DIA;
+		costo = diasParqueo * VALOR_DIA_MOTO;
 
 		if (horasParqueo < HORAS_MINIMO_COBRO) {
-			costo = VALOR_HORA;
+			costo = VALOR_HORA_MOTO;
 		} else if (horasParqueo <= HORAS_PARQUEADERO_DIA) {
-			costo += horasParqueo * VALOR_HORA;
+			costo += horasParqueo * VALOR_HORA_MOTO;
 		} else {
-			costo += VALOR_DIA;
+			costo += VALOR_DIA_MOTO;
 		}
 
 		if (registroEntity.getVehiculo().getCilindraje() > CILINDRAJE_COBRO_ADICIONAL) {

@@ -7,7 +7,7 @@ import com.ceiba.induccion.dominio.dto.VehiculoDto;
 import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
 import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
 
-public class RegistroBuilder {
+public final class RegistroBuilder {
 
 	public static final String USUARIO_SISTEMA = "usuario_prueba";
 	

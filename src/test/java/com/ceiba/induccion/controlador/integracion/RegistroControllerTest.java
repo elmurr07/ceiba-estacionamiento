@@ -74,7 +74,7 @@ public class RegistroControllerTest {
 		PagoDto pagoDto = registroController.registrarSalida(registroDto);
 
 		// assert
-		Assert.assertEquals(ReglasEstacionamientoMoto.VALOR_HORA, pagoDto.getValor(), 0);
+		Assert.assertEquals(ReglasEstacionamientoMoto.VALOR_HORA_MOTO, pagoDto.getValor(), 0);
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class RegistroControllerTest {
 		PagoDto pagoDto = registroController.registrarSalida(registroDto);
 
 		// assert
-		Assert.assertEquals(ReglasEstacionamientoCarro.VALOR_HORA, pagoDto.getValor(), 0);
+		Assert.assertEquals(ReglasEstacionamientoCarro.VALOR_HORA_CARRO, pagoDto.getValor(), 0);
 	}
 
 	@Test

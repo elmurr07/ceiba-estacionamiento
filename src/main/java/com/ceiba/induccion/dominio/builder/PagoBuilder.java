@@ -3,7 +3,7 @@ package com.ceiba.induccion.dominio.builder;
 import com.ceiba.induccion.dominio.dto.PagoDto;
 import com.ceiba.induccion.persistencia.entidad.PagoEntity;
 
-public class PagoBuilder {
+public final class PagoBuilder {
 
 	private PagoBuilder() {
 		throw new IllegalStateException("Clase Builder");

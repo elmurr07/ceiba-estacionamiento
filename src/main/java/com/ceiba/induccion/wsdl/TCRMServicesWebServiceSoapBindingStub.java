@@ -83,24 +83,7 @@ public class TCRMServicesWebServiceSoapBindingStub extends org.apache.axis.clien
 	protected org.apache.axis.client.Call createCall() throws java.rmi.RemoteException {
 		try {
 			org.apache.axis.client.Call xcall = super._createCall();
-			if (super.maintainSessionSet) {
-				xcall.setMaintainSession(super.maintainSession);
-			}
-			if (super.cachedUsername != null) {
-				xcall.setUsername(super.cachedUsername);
-			}
-			if (super.cachedPassword != null) {
-				xcall.setPassword(super.cachedPassword);
-			}
-			if (super.cachedEndpoint != null) {
-				xcall.setTargetEndpointAddress(super.cachedEndpoint);
-			}
-			if (super.cachedTimeout != null) {
-				xcall.setTimeout(super.cachedTimeout);
-			}
-			if (super.cachedPortName != null) {
-				xcall.setPortName(super.cachedPortName);
-			}
+			xcall = validarXCall(xcall);
 			java.util.Enumeration<?> keys = super.cachedProperties.keys();
 			while (keys.hasMoreElements()) {
 				java.lang.String key = (java.lang.String) keys.nextElement();
@@ -131,6 +114,28 @@ public class TCRMServicesWebServiceSoapBindingStub extends org.apache.axis.clien
 		} catch (ServiceException xt) {
 			throw new org.apache.axis.AxisFault("Failure trying to get the Call object", xt);
 		}
+	}
+
+	private org.apache.axis.client.Call validarXCall(org.apache.axis.client.Call xcall) {
+		if (super.maintainSessionSet) {
+			xcall.setMaintainSession(super.maintainSession);
+		}
+		if (super.cachedUsername != null) {
+			xcall.setUsername(super.cachedUsername);
+		}
+		if (super.cachedPassword != null) {
+			xcall.setPassword(super.cachedPassword);
+		}
+		if (super.cachedEndpoint != null) {
+			xcall.setTargetEndpointAddress(super.cachedEndpoint);
+		}
+		if (super.cachedTimeout != null) {
+			xcall.setTimeout(super.cachedTimeout);
+		}
+		if (super.cachedPortName != null) {
+			xcall.setPortName(super.cachedPortName);
+		}
+		return xcall;
 	}
 
 	public TcrmResponse queryTCRM(java.util.Calendar tcrmQueryAssociatedDate) throws java.rmi.RemoteException {
