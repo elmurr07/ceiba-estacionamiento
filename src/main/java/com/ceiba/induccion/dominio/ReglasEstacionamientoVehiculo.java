@@ -1,10 +1,10 @@
 package com.ceiba.induccion.dominio;
 
-import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
+import com.ceiba.induccion.dominio.entity.Registro;
 
 public interface ReglasEstacionamientoVehiculo {
 
-	double calcularCosto(RegistroEntity registroEntity);
+	double calcularCosto(Registro registro);
 
 	boolean existeCupo(int numero);
 

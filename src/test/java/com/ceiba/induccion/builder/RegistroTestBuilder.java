@@ -2,19 +2,16 @@ package com.ceiba.induccion.builder;
 
 import java.util.Date;
 
-import com.ceiba.induccion.dominio.dto.RegistroDto;
-import com.ceiba.induccion.dominio.dto.VehiculoDto;
-import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
-import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
+import com.ceiba.induccion.dominio.entity.Registro;
+import com.ceiba.induccion.dominio.entity.Vehiculo;
 
 public class RegistroTestBuilder {
 
-	private VehiculoDto vehiculoDto;
-	private VehiculoEntity vehiculoEntity;
+	private Vehiculo vehiculo;
 	private Date inicio;
 	private Date fin;
-	private String usuario;
-	private Date fecha;
+	private String usuarioRegistro;
+	private Date fechaRegistro;
 
 	private RegistroTestBuilder() {
 		super();
@@ -24,13 +21,8 @@ public class RegistroTestBuilder {
 		return new RegistroTestBuilder();
 	}
 
-	public RegistroTestBuilder conVehiculoDto(VehiculoDto vehiculo) {
-		this.vehiculoDto = vehiculo;
-		return this;
-	}
-
-	public RegistroTestBuilder conVehiculoEntity(VehiculoEntity vehiculoEntity) {
-		this.vehiculoEntity = vehiculoEntity;
+	public RegistroTestBuilder conVehiculo(Vehiculo vehiculo) {
+		this.vehiculo = vehiculo;
 		return this;
 	}
 
@@ -44,22 +36,18 @@ public class RegistroTestBuilder {
 		return this;
 	}
 
-	public RegistroTestBuilder conUsuario(String usuario) {
-		this.usuario = usuario;
+	public RegistroTestBuilder conUsuarioRegistro(String usuario) {
+		this.usuarioRegistro = usuario;
 		return this;
 	}
 
-	public RegistroTestBuilder conFecha(Date fecha) {
-		this.fecha = fecha;
+	public RegistroTestBuilder conFechaRegistro(Date fecha) {
+		this.fechaRegistro = fecha;
 		return this;
 	}
 
-	public RegistroEntity build() {
-		return new RegistroEntity(vehiculoEntity, inicio, fin, usuario, fecha);
-	}
-
-	public RegistroDto buildDto() {
-		return new RegistroDto(0, vehiculoDto, inicio, fin);
+	public Registro build() {
+		return new Registro(0, vehiculo, inicio, fin, usuarioRegistro, fechaRegistro);
 	}
 
 }

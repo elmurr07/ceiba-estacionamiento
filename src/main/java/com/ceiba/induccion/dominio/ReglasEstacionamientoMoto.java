@@ -1,9 +1,9 @@
 package com.ceiba.induccion.dominio;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
-import com.ceiba.induccion.utilidad.CalendarUtil;
+import com.ceiba.induccion.dominio.entity.Registro;
 
 @Component("moto")
 public class ReglasEstacionamientoMoto implements ReglasEstacionamientoVehiculo {
@@ -17,10 +17,13 @@ public class ReglasEstacionamientoMoto implements ReglasEstacionamientoVehiculo 
 	private static final long HORAS_DIA_MOTO = 24;
 	private static final long CILINDRAJE_COBRO_ADICIONAL = 500;
 
+	@Autowired
+	private CalendarioVigilante calendarioVigilante;
+
 	@Override
-	public double calcularCosto(RegistroEntity registroEntity) {
+	public double calcularCosto(Registro registro) {
 		double costo = 0;
-		long totalHoras = CalendarUtil.horasEntreFechas(registroEntity.getInicio(), registroEntity.getFin());
+		long totalHoras = calendarioVigilante.horasEntreFechas(registro.getInicio(), registro.getFin());
 
 		long diasParqueo = totalHoras / HORAS_DIA_MOTO;
 		long horasParqueo = totalHoras % HORAS_DIA_MOTO;
@@ -35,7 +38,7 @@ public class ReglasEstacionamientoMoto implements ReglasEstacionamientoVehiculo 
 			costo += VALOR_DIA_MOTO;
 		}
 
-		if (registroEntity.getVehiculo().getCilindraje() > CILINDRAJE_COBRO_ADICIONAL) {
+		if (registro.getVehiculo().getCilindraje() > CILINDRAJE_COBRO_ADICIONAL) {
 			costo += VALOR_ADICIONAL_CILINDRAJE;
 		}
 

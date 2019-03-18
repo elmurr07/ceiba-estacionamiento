@@ -7,25 +7,34 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ceiba.induccion.builder.RegistroTestBuilder;
 import com.ceiba.induccion.builder.VehiculoTestBuilder;
+import com.ceiba.induccion.dominio.CalendarioVigilante;
 import com.ceiba.induccion.dominio.ReglasEstacionamientoMoto;
-import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
-import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
-import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
+import com.ceiba.induccion.dominio.entity.Registro;
+import com.ceiba.induccion.dominio.entity.TipoVehiculoEnum;
+import com.ceiba.induccion.dominio.entity.Vehiculo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class ReglasEstacionamientoMotoTest {
 
 	@InjectMocks
 	private ReglasEstacionamientoMoto reglasEstacionamientoMoto;
+
+	@Spy
+	private CalendarioVigilante calendarioVigilante;
 
 	private static final String PLACA_MOTO = "LGH156";
 	private static final int CILINDRAJE_MOTO_ALTO = 650;
@@ -43,11 +52,16 @@ public class ReglasEstacionamientoMotoTest {
 
 	private SimpleDateFormat formatoFechaHora = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
+	@Before
+	public void setup() {
+		MockitoAnnotations.initMocks(ReglasEstacionamientoMotoTest.class);
+	}
+
 	@Test
 	public void costoEstacionamiento10HorasCilindrajeAltoTest() {
 		// arrange
-		VehiculoEntity vehiculoEntity = VehiculoTestBuilder.defaultValues().conTipo(TipoVehiculoEnum.CARRO)
-				.conPlaca(PLACA_MOTO).conCilindraje(CILINDRAJE_MOTO_ALTO).build();
+		Vehiculo vehiculo = VehiculoTestBuilder.defaultValues().conTipo(TipoVehiculoEnum.CARRO).conPlaca(PLACA_MOTO)
+				.conCilindraje(CILINDRAJE_MOTO_ALTO).build();
 		Date fechaInicio = null;
 		Date fechaFin = null;
 		try {
@@ -56,11 +70,11 @@ public class ReglasEstacionamientoMotoTest {
 		} catch (ParseException e) {
 			fail();
 		}
-		RegistroEntity registroEntity = RegistroTestBuilder.defaultValues().conVehiculoEntity(vehiculoEntity)
-				.conInicio(fechaInicio).conFin(fechaFin).build();
+		Registro registro = RegistroTestBuilder.defaultValues().conVehiculo(vehiculo).conInicio(fechaInicio)
+				.conFin(fechaFin).build();
 
 		// act
-		double costo = reglasEstacionamientoMoto.calcularCosto(registroEntity);
+		double costo = reglasEstacionamientoMoto.calcularCosto(registro);
 
 		// assert
 		Assert.assertEquals(COSTO_VEHICULO_1, costo, 0);
@@ -69,8 +83,8 @@ public class ReglasEstacionamientoMotoTest {
 	@Test
 	public void costoEstacionamiento9HorasCilindrajeBajoTest() {
 		// arrange
-		VehiculoEntity vehiculoEntity = VehiculoTestBuilder.defaultValues().conTipo(TipoVehiculoEnum.CARRO)
-				.conPlaca(PLACA_MOTO).conCilindraje(CILINDRAJE_MOTO_BAJO).build();
+		Vehiculo vehiculo = VehiculoTestBuilder.defaultValues().conTipo(TipoVehiculoEnum.CARRO).conPlaca(PLACA_MOTO)
+				.conCilindraje(CILINDRAJE_MOTO_BAJO).build();
 		Date fechaInicio = null;
 		Date fechaFin = null;
 		try {
@@ -79,11 +93,11 @@ public class ReglasEstacionamientoMotoTest {
 		} catch (ParseException e) {
 			fail();
 		}
-		RegistroEntity registroEntity = RegistroTestBuilder.defaultValues().conVehiculoEntity(vehiculoEntity)
-				.conInicio(fechaInicio).conFin(fechaFin).build();
+		Registro registro = RegistroTestBuilder.defaultValues().conVehiculo(vehiculo).conInicio(fechaInicio)
+				.conFin(fechaFin).build();
 
 		// act
-		double costo = reglasEstacionamientoMoto.calcularCosto(registroEntity);
+		double costo = reglasEstacionamientoMoto.calcularCosto(registro);
 
 		// assert
 		Assert.assertEquals(COSTO_VEHICULO_2, costo, 0);
@@ -92,8 +106,8 @@ public class ReglasEstacionamientoMotoTest {
 	@Test
 	public void costoEstacionamiento30MinutosCilindrajeBajoTest() {
 		// arrange
-		VehiculoEntity vehiculoEntity = VehiculoTestBuilder.defaultValues().conTipo(TipoVehiculoEnum.CARRO)
-				.conPlaca(PLACA_MOTO).conCilindraje(CILINDRAJE_MOTO_BAJO).build();
+		Vehiculo vehiculo = VehiculoTestBuilder.defaultValues().conTipo(TipoVehiculoEnum.CARRO).conPlaca(PLACA_MOTO)
+				.conCilindraje(CILINDRAJE_MOTO_BAJO).build();
 		Date fechaInicio = null;
 		Date fechaFin = null;
 		try {
@@ -102,11 +116,11 @@ public class ReglasEstacionamientoMotoTest {
 		} catch (ParseException e) {
 			fail();
 		}
-		RegistroEntity registroEntity = RegistroTestBuilder.defaultValues().conVehiculoEntity(vehiculoEntity)
-				.conInicio(fechaInicio).conFin(fechaFin).build();
+		Registro registro = RegistroTestBuilder.defaultValues().conVehiculo(vehiculo).conInicio(fechaInicio)
+				.conFin(fechaFin).build();
 
 		// act
-		double costo = reglasEstacionamientoMoto.calcularCosto(registroEntity);
+		double costo = reglasEstacionamientoMoto.calcularCosto(registro);
 
 		// assert
 		Assert.assertEquals(COSTO_VEHICULO_3, costo, 0);

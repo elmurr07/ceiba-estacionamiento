@@ -7,25 +7,34 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ceiba.induccion.builder.RegistroTestBuilder;
 import com.ceiba.induccion.builder.VehiculoTestBuilder;
+import com.ceiba.induccion.dominio.CalendarioVigilante;
 import com.ceiba.induccion.dominio.ReglasEstacionamientoCarro;
-import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
-import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
-import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
+import com.ceiba.induccion.dominio.entity.Registro;
+import com.ceiba.induccion.dominio.entity.TipoVehiculoEnum;
+import com.ceiba.induccion.dominio.entity.Vehiculo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class ReglasEstacionamientoCarroTest {
 
 	@InjectMocks
 	private ReglasEstacionamientoCarro reglasEstacionamientoCarro;
+
+	@Spy
+	private CalendarioVigilante calendarioVigilante;
 
 	private static final String PLACA_CARRO = "LGH156";
 	private static final String FECHA_INICIO_VEHICULO_1 = "20/02/2019 16:00";
@@ -41,11 +50,16 @@ public class ReglasEstacionamientoCarroTest {
 
 	private SimpleDateFormat formatoFechaHora = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
+	@Before
+	public void setup() {
+		MockitoAnnotations.initMocks(ReglasEstacionamientoCarroTest.class);
+	}
+
 	@Test
 	public void costoEstacionamiento1Dia3HorasTest() {
 		// arrange
-		VehiculoEntity vehiculoEntity = VehiculoTestBuilder.defaultValues().conTipo(TipoVehiculoEnum.CARRO)
-				.conPlaca(PLACA_CARRO).build();
+		Vehiculo vehiculo = VehiculoTestBuilder.defaultValues().conTipo(TipoVehiculoEnum.CARRO).conPlaca(PLACA_CARRO)
+				.build();
 		Date fechaInicio = null;
 		Date fechaFin = null;
 		try {
@@ -54,11 +68,12 @@ public class ReglasEstacionamientoCarroTest {
 		} catch (ParseException e) {
 			fail();
 		}
-		RegistroEntity registroEntity = RegistroTestBuilder.defaultValues().conVehiculoEntity(vehiculoEntity)
-				.conInicio(fechaInicio).conFin(fechaFin).build();
+
+		Registro registro = RegistroTestBuilder.defaultValues().conVehiculo(vehiculo).conInicio(fechaInicio)
+				.conFin(fechaFin).build();
 
 		// act
-		double costo = reglasEstacionamientoCarro.calcularCosto(registroEntity);
+		double costo = reglasEstacionamientoCarro.calcularCosto(registro);
 
 		// assert
 		Assert.assertEquals(COSTO_VEHICULO_1, costo, 0);
@@ -67,8 +82,8 @@ public class ReglasEstacionamientoCarroTest {
 	@Test
 	public void costoEstacionamiento9HorasTest() {
 		// arrange
-		VehiculoEntity vehiculoEntity = VehiculoTestBuilder.defaultValues().conTipo(TipoVehiculoEnum.CARRO)
-				.conPlaca(PLACA_CARRO).build();
+		Vehiculo vehiculo = VehiculoTestBuilder.defaultValues().conTipo(TipoVehiculoEnum.CARRO).conPlaca(PLACA_CARRO)
+				.build();
 		Date fechaInicio = null;
 		Date fechaFin = null;
 		try {
@@ -77,11 +92,11 @@ public class ReglasEstacionamientoCarroTest {
 		} catch (ParseException e) {
 			fail();
 		}
-		RegistroEntity registroEntity = RegistroTestBuilder.defaultValues().conVehiculoEntity(vehiculoEntity)
-				.conInicio(fechaInicio).conFin(fechaFin).build();
+		Registro registro = RegistroTestBuilder.defaultValues().conVehiculo(vehiculo).conInicio(fechaInicio)
+				.conFin(fechaFin).build();
 
 		// act
-		double costo = reglasEstacionamientoCarro.calcularCosto(registroEntity);
+		double costo = reglasEstacionamientoCarro.calcularCosto(registro);
 
 		// assert
 		Assert.assertEquals(COSTO_VEHICULO_2, costo, 0);
@@ -90,8 +105,8 @@ public class ReglasEstacionamientoCarroTest {
 	@Test
 	public void costoEstacionamiento30MinutosTest() {
 		// arrange
-		VehiculoEntity vehiculoEntity = VehiculoTestBuilder.defaultValues().conTipo(TipoVehiculoEnum.CARRO)
-				.conPlaca(PLACA_CARRO).build();
+		Vehiculo vehiculo = VehiculoTestBuilder.defaultValues().conTipo(TipoVehiculoEnum.CARRO).conPlaca(PLACA_CARRO)
+				.build();
 		Date fechaInicio = null;
 		Date fechaFin = null;
 		try {
@@ -100,11 +115,11 @@ public class ReglasEstacionamientoCarroTest {
 		} catch (ParseException e) {
 			fail();
 		}
-		RegistroEntity registroEntity = RegistroTestBuilder.defaultValues().conVehiculoEntity(vehiculoEntity)
-				.conInicio(fechaInicio).conFin(fechaFin).build();
+		Registro registro = RegistroTestBuilder.defaultValues().conVehiculo(vehiculo).conInicio(fechaInicio)
+				.conFin(fechaFin).build();
 
 		// act
-		double costo = reglasEstacionamientoCarro.calcularCosto(registroEntity);
+		double costo = reglasEstacionamientoCarro.calcularCosto(registro);
 
 		// assert
 		Assert.assertEquals(COSTO_VEHICULO_3, costo, 0);

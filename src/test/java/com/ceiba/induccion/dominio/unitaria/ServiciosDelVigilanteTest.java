@@ -4,8 +4,6 @@ import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
-import java.time.DayOfWeek;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,15 +19,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ceiba.induccion.builder.RegistroTestBuilder;
 import com.ceiba.induccion.builder.VehiculoTestBuilder;
 import com.ceiba.induccion.dominio.CalendarioVigilante;
-import com.ceiba.induccion.dominio.LibretaVigilante;
+import com.ceiba.induccion.dominio.OperacionesDelVigilante;
 import com.ceiba.induccion.dominio.ReglasEstacionamiento;
 import com.ceiba.induccion.dominio.ReglasEstacionamientoCarro;
 import com.ceiba.induccion.dominio.ReglasEstacionamientoMoto;
-import com.ceiba.induccion.dominio.ServiciosDelVigilanteImpl;
-import com.ceiba.induccion.dominio.dto.RegistroDto;
-import com.ceiba.induccion.dominio.dto.VehiculoDto;
+import com.ceiba.induccion.dominio.UsuarioSesionHttp;
+import com.ceiba.induccion.dominio.entity.Registro;
+import com.ceiba.induccion.dominio.entity.TipoVehiculoEnum;
+import com.ceiba.induccion.dominio.entity.Vehiculo;
 import com.ceiba.induccion.dominio.excepcion.RegistroException;
-import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
+import com.ceiba.induccion.dominio.port.RegistroRepository;
+import com.ceiba.induccion.dominio.port.VehiculoRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -48,10 +49,16 @@ public class ServiciosDelVigilanteTest {
 	private ReglasEstacionamiento reglasEstacionamiento;
 
 	@Mock
-	private LibretaVigilante libretaVigilante;
+	private RegistroRepository registroRepository;
+
+	@Mock
+	private VehiculoRepository vehiculoRepository;
+
+	@Spy
+	private UsuarioSesionHttp usuarioSesion;
 
 	@InjectMocks
-	private ServiciosDelVigilanteImpl serviciosDelVigilante;
+	private OperacionesDelVigilante operacionesDelVigilante;
 
 	@Before
 	public void setUp() {
@@ -61,18 +68,21 @@ public class ServiciosDelVigilanteTest {
 	@Test
 	public void registrarMotoConCupoTest() {
 		// arrange
-		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION)
-				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
+		Vehiculo vehiculo = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION)
+				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).build();
 
-		when(libretaVigilante.contarVehiculosEstacionados(TipoVehiculoEnum.MOTO)).thenReturn(MOTOS_EN_PARQUEADERO);
+		when(registroRepository.contarVehiculosEstacionados(TipoVehiculoEnum.MOTO)).thenReturn(MOTOS_EN_PARQUEADERO);
 
-		when(reglasEstacionamiento.validarCupo(TipoVehiculoEnum.MOTO, MOTOS_EN_PARQUEADERO)).thenReturn(Boolean.TRUE);
+		when(reglasEstacionamiento.validarSiExisteCupo(TipoVehiculoEnum.MOTO, MOTOS_EN_PARQUEADERO))
+				.thenReturn(Boolean.TRUE);
 
-		RegistroDto registroDto = RegistroTestBuilder.defaultValues().conVehiculoDto(vehiculoDto).buildDto();
-		when(libretaVigilante.registrarIngresoVehiculo(any())).thenReturn(registroDto);
+		when(vehiculoRepository.save(any())).thenReturn(vehiculo);
+
+		Registro registro = RegistroTestBuilder.defaultValues().conVehiculo(vehiculo).build();
+		when(registroRepository.save(any())).thenReturn(registro);
 
 		// act
-		RegistroDto registroAlmacenado = serviciosDelVigilante.registrarIngreso(vehiculoDto);
+		Registro registroAlmacenado = operacionesDelVigilante.registrarIngreso(vehiculo);
 
 		// assert
 		Assert.assertEquals(PLACA_VEHICULO_SIN_RESTRICCION, registroAlmacenado.getVehiculo().getPlaca());
@@ -83,18 +93,21 @@ public class ServiciosDelVigilanteTest {
 	@Test
 	public void registrarCarroConCupoTest() {
 		// arrange
-		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION)
-				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
+		Vehiculo vehiculo = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION)
+				.conTipo(TipoVehiculoEnum.CARRO).build();
 
-		when(libretaVigilante.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO)).thenReturn(CARROS_EN_PARQUEADERO);
+		when(registroRepository.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO)).thenReturn(CARROS_EN_PARQUEADERO);
 
-		when(reglasEstacionamiento.validarCupo(TipoVehiculoEnum.CARRO, CARROS_EN_PARQUEADERO)).thenReturn(Boolean.TRUE);
+		when(reglasEstacionamiento.validarSiExisteCupo(TipoVehiculoEnum.CARRO, CARROS_EN_PARQUEADERO))
+				.thenReturn(Boolean.TRUE);
 
-		RegistroDto registroDto = RegistroTestBuilder.defaultValues().conVehiculoDto(vehiculoDto).buildDto();
-		when(libretaVigilante.registrarIngresoVehiculo(any())).thenReturn(registroDto);
+		when(vehiculoRepository.save(any())).thenReturn(vehiculo);
+
+		Registro registro = RegistroTestBuilder.defaultValues().conVehiculo(vehiculo).build();
+		when(registroRepository.save(any())).thenReturn(registro);
 
 		// act
-		RegistroDto registroAlmacenado = serviciosDelVigilante.registrarIngreso(vehiculoDto);
+		Registro registroAlmacenado = operacionesDelVigilante.registrarIngreso(vehiculo);
 
 		// assert
 		Assert.assertEquals(PLACA_VEHICULO_SIN_RESTRICCION, registroAlmacenado.getVehiculo().getPlaca());
@@ -104,69 +117,62 @@ public class ServiciosDelVigilanteTest {
 	@Test
 	public void noPermitirRegistrarMotoSinCupoTest() {
 		// arrange
-		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION)
-				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
+		Vehiculo vehiculo = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION)
+				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).build();
 
-		when(libretaVigilante.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO))
+		when(registroRepository.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO))
 				.thenReturn(ReglasEstacionamientoMoto.CUPO_MOTOS_PARQUEADERO);
 
-		when(reglasEstacionamiento.validarCupo(TipoVehiculoEnum.MOTO, ReglasEstacionamientoMoto.CUPO_MOTOS_PARQUEADERO))
-				.thenReturn(Boolean.FALSE);
+		when(reglasEstacionamiento.validarSiExisteCupo(TipoVehiculoEnum.MOTO,
+				ReglasEstacionamientoMoto.CUPO_MOTOS_PARQUEADERO)).thenReturn(Boolean.FALSE);
 
 		// act
 		try {
-			serviciosDelVigilante.registrarIngreso(vehiculoDto);
+			operacionesDelVigilante.registrarIngreso(vehiculo);
+			fail();
 		} catch (RegistroException e) {
-			Assert.assertEquals(ServiciosDelVigilanteImpl.MENSAJE_ERROR_NO_HAY_CUPO, e.getMessage());
-			return;
+			Assert.assertEquals(OperacionesDelVigilante.MENSAJE_ERROR_NO_HAY_CUPO, e.getMessage());
 		}
-
-		// assert
-		fail();
 	}
 
 	@Test
 	public void noPermitirRegistrarCarroSinCupoTest() {
 		// arrange
-		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION)
-				.conTipo(TipoVehiculoEnum.CARRO).buildDto();
+		Vehiculo vehiculo = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_SIN_RESTRICCION)
+				.conTipo(TipoVehiculoEnum.CARRO).build();
 
-		when(libretaVigilante.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO))
+		when(registroRepository.contarVehiculosEstacionados(TipoVehiculoEnum.CARRO))
 				.thenReturn(ReglasEstacionamientoCarro.CUPO_CARROS_PARQUEADERO);
 
-		when(reglasEstacionamiento.validarCupo(TipoVehiculoEnum.CARRO, ReglasEstacionamientoCarro.CUPO_CARROS_PARQUEADERO))
-				.thenReturn(Boolean.FALSE);
+		when(reglasEstacionamiento.validarSiExisteCupo(TipoVehiculoEnum.CARRO,
+				ReglasEstacionamientoCarro.CUPO_CARROS_PARQUEADERO)).thenReturn(Boolean.FALSE);
 
 		// act
 		try {
-			serviciosDelVigilante.registrarIngreso(vehiculoDto);
+			operacionesDelVigilante.registrarIngreso(vehiculo);
+			fail();
 		} catch (RegistroException e) {
-			Assert.assertEquals(ServiciosDelVigilanteImpl.MENSAJE_ERROR_NO_HAY_CUPO, e.getMessage());
-			return;
+			Assert.assertEquals(OperacionesDelVigilante.MENSAJE_ERROR_NO_HAY_CUPO, e.getMessage());
 		}
 
-		// assert
-		fail();
 	}
-	
+
 	@Test
 	public void noPermitirRegistrarVehiculoConRestriccionTest() {
 		// arrange
-		VehiculoDto vehiculoDto = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_CON_RESTRICCION)
-				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).buildDto();
-		
-		when(calendarioVigilante.dayWeekFromDate(any())).thenReturn(DayOfWeek.THURSDAY);
-		
+		Vehiculo vehiculo = VehiculoTestBuilder.defaultValues().conPlaca(PLACA_VEHICULO_CON_RESTRICCION)
+				.conCilindraje(CILINDRAJE_MOTO).conTipo(TipoVehiculoEnum.MOTO).build();
+
+		when(reglasEstacionamiento.validarSiExisteRestriccion(any())).thenReturn(Boolean.TRUE);
+
 		// act
 		try {
-			serviciosDelVigilante.registrarIngreso(vehiculoDto);
+			operacionesDelVigilante.registrarIngreso(vehiculo);
+			fail();
 		} catch (RegistroException e) {
-			Assert.assertEquals(ServiciosDelVigilanteImpl.MENSAJE_ERROR_NO_INGRESO_FIN_SEMANA, e.getMessage());
-			return;
+			Assert.assertEquals(OperacionesDelVigilante.MENSAJE_ERROR_NO_INGRESO_FIN_SEMANA, e.getMessage());
 		}
-		
-		// assert
-		fail();
+
 	}
 
 }

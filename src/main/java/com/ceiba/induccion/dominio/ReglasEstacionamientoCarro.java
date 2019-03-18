@@ -1,9 +1,9 @@
 package com.ceiba.induccion.dominio;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ceiba.induccion.persistencia.entidad.RegistroEntity;
-import com.ceiba.induccion.utilidad.CalendarUtil;
+import com.ceiba.induccion.dominio.entity.Registro;
 
 @Component("carro")
 public class ReglasEstacionamientoCarro implements ReglasEstacionamientoVehiculo {
@@ -15,10 +15,13 @@ public class ReglasEstacionamientoCarro implements ReglasEstacionamientoVehiculo
 	private static final long HORAS_PARQUEADERO_DIA = 8;
 	private static final long HORAS_DIA_CARRO = 24;
 
+	@Autowired
+	private CalendarioVigilante calendarioVigilante;
+
 	@Override
-	public double calcularCosto(RegistroEntity registroEntity) {
+	public double calcularCosto(Registro registro) {
 		double costo = 0;
-		long totalHoras = CalendarUtil.horasEntreFechas(registroEntity.getInicio(), registroEntity.getFin());
+		long totalHoras = calendarioVigilante.horasEntreFechas(registro.getInicio(), registro.getFin());
 
 		long diasParqueo = totalHoras / HORAS_DIA_CARRO;
 		long horasParqueo = totalHoras % HORAS_DIA_CARRO;

@@ -2,17 +2,16 @@ package com.ceiba.induccion.builder;
 
 import java.util.Date;
 
-import com.ceiba.induccion.dominio.dto.VehiculoDto;
-import com.ceiba.induccion.persistencia.entidad.VehiculoEntity;
-import com.ceiba.induccion.utilidad.TipoVehiculoEnum;
+import com.ceiba.induccion.dominio.entity.TipoVehiculoEnum;
+import com.ceiba.induccion.dominio.entity.Vehiculo;
 
 public class VehiculoTestBuilder {
 
 	private String placa;
 	private TipoVehiculoEnum tipo;
 	private Integer cilindraje;
-	private String usuario;
-	private Date fecha;
+	private String usuarioRegistro;
+	private Date fechaRegistro;
 
 	private VehiculoTestBuilder() {
 		super();
@@ -37,22 +36,18 @@ public class VehiculoTestBuilder {
 		return this;
 	}
 
-	public VehiculoTestBuilder setUsuario(String usuario) {
-		this.usuario = usuario;
+	public VehiculoTestBuilder setUsuarioRegistro(String usuario) {
+		this.usuarioRegistro = usuario;
 		return this;
 	}
 
-	public VehiculoTestBuilder setFecha(Date fecha) {
-		this.fecha = fecha;
+	public VehiculoTestBuilder setFechaRegistro(Date fecha) {
+		this.fechaRegistro = fecha;
 		return this;
 	}
 
-	public VehiculoEntity build() {
-		return new VehiculoEntity(this.placa, this.tipo, this.cilindraje, this.usuario, this.fecha);
-	}
-
-	public VehiculoDto buildDto() {
-		return new VehiculoDto(this.placa, this.tipo, this.cilindraje);
+	public Vehiculo build() {
+		return new Vehiculo(this.placa, this.tipo, this.cilindraje, this.usuarioRegistro, this.fechaRegistro);
 	}
 
 }
