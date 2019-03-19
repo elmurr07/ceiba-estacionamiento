@@ -47,7 +47,7 @@ public class VehiculoTestBuilder {
 	}
 
 	public Vehiculo build() {
-		return new Vehiculo(this.placa, this.tipo, this.cilindraje, this.usuarioRegistro, this.fechaRegistro);
+		return new Vehiculo(0, this.placa, this.tipo, this.cilindraje, this.usuarioRegistro, this.fechaRegistro);
 	}
 
 }

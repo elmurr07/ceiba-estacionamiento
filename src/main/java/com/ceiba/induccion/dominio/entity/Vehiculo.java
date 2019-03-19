@@ -18,10 +18,11 @@ public class Vehiculo {
 		super();
 	}
 
-	public Vehiculo(String placa, TipoVehiculoEnum tipo, Integer cilindraje, String usuarioRegistro,
+	public Vehiculo(long id, String placa, TipoVehiculoEnum tipo, Integer cilindraje, String usuarioRegistro,
 			Date fechaRegistro) {
 		ArgumentValidator.validateRequired(placa, MENSAJE_ERROR_PLACA_REQUERIDO);
 		ArgumentValidator.validateRequired(tipo, MENSAJE_ERROR_TIPO_VEHICULO_REQUERIDO);
+		this.id = id;
 		this.placa = placa;
 		this.tipo = tipo;
 		this.cilindraje = cilindraje;

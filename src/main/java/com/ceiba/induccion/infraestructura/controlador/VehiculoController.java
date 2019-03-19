@@ -23,7 +23,7 @@ public class VehiculoController {
 
 	@PostMapping
 	public Registro registrarIngreso(@RequestBody VehiculoDto vehiculoDto) {
-		return registrarIngresoCommand.execute(new Vehiculo(vehiculoDto.getPlaca(),
+		return registrarIngresoCommand.execute(new Vehiculo(vehiculoDto.getId(), vehiculoDto.getPlaca(),
 				TipoVehiculoEnum.valueOf(vehiculoDto.getTipo()), vehiculoDto.getCilindraje(), null, null));
 	}
 
