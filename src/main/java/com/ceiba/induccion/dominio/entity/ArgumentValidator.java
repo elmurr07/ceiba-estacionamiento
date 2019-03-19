@@ -2,7 +2,7 @@ package com.ceiba.induccion.dominio.entity;
 
 import com.ceiba.induccion.dominio.excepcion.RegistroException;
 
-public class ArgumentValidator {
+public final class ArgumentValidator {
 	private ArgumentValidator() {
 	}
 
